@@ -42,12 +42,11 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     }
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     public static class TareaViewHolder extends RecyclerView.ViewHolder{
 
         private TextView titleTextView;
-        private TextView habitantesTextView;
-        private CheckBox favoritaCheckBox;
+        private TextView descripcionTextView;
+        private CheckBox prioritarioCheckBox;
 
         //Metodo constructor
         public TareaViewHolder(@NonNull View itemView) {
@@ -63,8 +62,8 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
         //el mismo pueda ser mostrado en el RecyclerView
         public void bindCapital(Tarea t) {
             titleTextView.setText(t.getTitulo());
-            habitantesTextView.setText(t.);
-            favoritaCheckBox.setChecked(t.isFavorita());
+            descripcionTextView.setText(t.getDescripcion());
+            prioritarioCheckBox.setChecked(t.isPrioritario());
         }
     }
 }
