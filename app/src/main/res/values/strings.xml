@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Tarea final</string>
+    <string name="texto_inicial">Tus tareas, tu ritmo, tu éxito\n</string>
+    <string name="start_app">EMPEZAR\n</string>
+    <string name="todo">TODO</string>
+</resources>
