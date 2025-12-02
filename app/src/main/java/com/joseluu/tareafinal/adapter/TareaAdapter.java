@@ -26,14 +26,16 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     @Override
     public TareaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_tarea,parent,false);
-        return new TareaViewHolder(item);
+        TareaViewHolder tareaViewHolder = new TareaViewHolder(item);
+
+        return tareaViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull TareaViewHolder holder, int position) {
         //Asignamos el dato del array correspondiente a la posición actual al
         //objeto ViewHolder, de forma que se represente en el RecyclerView.
-        holder.bindCapital(tareaData.get(position));
+        holder.bindTarea(tareaData.get(position));
     }
 
     @Override
@@ -45,28 +47,28 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
 
     public static class TareaViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView titleTextView;
-        private TextView descripcionTextView;
+        private final TextView titleTextView;
+        private final TextView descripcionTextView;
         private TextView progresoTextView;
         private TextView dateTextView1;
         private TextView dateTextView2;
-        private CheckBox prioritarioCheckBox;
+        private final CheckBox prioritarioCheckBox;
 
         //Metodo constructor
         public TareaViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            titleTextView = itemView.findViewById(R.id.txtTitle);
+            descripcionTextView = itemView.findViewById(R.id.txtDescripcion);
+            prioritarioCheckBox = itemView.findViewById(R.id.cbPrioritario);
         }
 
         //Metodo que nos permitirá dar valores a cada campo del objeto ViewHolder y que
         //el mismo pueda ser mostrado en el RecyclerView
         @SuppressLint("SetTextI18n")
-        public void bindCapital(Tarea t) {
+        public void bindTarea(Tarea t) {
             titleTextView.setText(t.getTitulo());
             descripcionTextView.setText(t.getDescripcion());
-            progresoTextView.setText(t.getProgreso() + "%");
-            dateTextView1.setText(t.getFechaCreacion().toString());
-            dateTextView2.setText(t.getFechaObjectivo().toString());
             prioritarioCheckBox.setChecked(t.isPrioritario());
         }
     }
