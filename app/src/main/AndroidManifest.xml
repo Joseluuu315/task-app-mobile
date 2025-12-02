@@ -18,8 +18,8 @@
             android:name=".CrearTareaActivity"
             android:exported="false" />
         <activity
-            android:name=".ListadoTareasActivity"
-            android:exported="false" />
+            android:name=".ListadoTareasActivity" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
