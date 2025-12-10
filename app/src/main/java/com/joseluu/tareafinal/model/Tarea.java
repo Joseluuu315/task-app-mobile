@@ -1,8 +1,14 @@
 package com.joseluu.tareafinal.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Tarea {
+public class Tarea implements Parcelable {
 
     private String titulo, descripcion;
     private int progreso;
@@ -64,5 +70,15 @@ public class Tarea {
 
     public void setPrioritario(boolean prioritario) {
         this.prioritario = prioritario;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+
     }
 }

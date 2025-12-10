@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edtTitulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Título de la tarea"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/edtFechaCreacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Fecha de creación"
+        android:focusable="false"
+        app:layout_constraintTop_toBottomOf="@id/edtTitulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/edtFechaObjetivo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Fecha objetivo"
+        android:focusable="false"
+        app:layout_constraintTop_toBottomOf="@id/edtFechaCreacion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerProgreso"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edtFechaObjetivo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <CheckBox
+        android:id="@+id/cbPrioritaria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prioritaria"
+        app:layout_constraintTop_toBottomOf="@id/spinnerProgreso"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Siguiente"
+        app:layout_constraintTop_toBottomOf="@id/cbPrioritaria"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="18dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.joseluu.tareafinal;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -17,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.joseluu.tareafinal.adapter.TareaAdapter;
+import com.joseluu.tareafinal.fragment.FragmentoPasoDos;
 import com.joseluu.tareafinal.model.Tarea;
 
 import java.util.ArrayList;
@@ -29,32 +33,50 @@ public class ListadoTareasActivity extends AppCompatActivity {
     private RecyclerView rvTareas;
     private TextView txtNoTareas;
 
+    // Declarar un launcher
+    private ActivityResultLauncher<Intent> crearTareaLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listado_tareas);
 
-        // Referencias al layout
         rvTareas = findViewById(R.id.rvTareas);
         txtNoTareas = findViewById(R.id.txtNoTareas);
 
-        // Crear datos de ejemplo
+        // Inicializar datos y RecyclerView
         init();
-
-        // Configurar RecyclerView
         TareaAdapter adaptador = new TareaAdapter(datos);
         rvTareas.setAdapter(adaptador);
         rvTareas.setLayoutManager(new LinearLayoutManager(this));
 
-        // Mostrar / ocultar según si hay tareas
         actualizarVisibilidad();
 
-        rvTareas.setRecyclerListener(new RecyclerView.RecyclerListener() {
-            @Override
-            public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                // No necesitas nada aquí, pero está bien definido
-            }
+        crearTareaLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.hasExtra("TAREA_NUEVA")) {
+                            Tarea nueva = data.getParcelableExtra("TAREA_NUEVA");
+                            if (nueva != null) {
+                                datos.add(0, nueva); // agregar al inicio
+                                rvTareas.getAdapter().notifyItemInserted(0);
+                                actualizarVisibilidad();
+                                rvTareas.scrollToPosition(0);
+                            }
+                        }
+                    }
+                }
+        );
+
+
+        com.google.android.material.floatingactionbutton.FloatingActionButton btnCrearTarea = findViewById(R.id.btnCrearTarea);
+        btnCrearTarea.setOnClickListener(v -> {
+            Intent intent = new Intent(ListadoTareasActivity.this, CrearTareaActivity.class);
+            crearTareaLauncher.launch(intent);
         });
+
 
     }
 

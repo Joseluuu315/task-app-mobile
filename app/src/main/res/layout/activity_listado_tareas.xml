@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +9,7 @@
         android:id="@+id/txtTituloListado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tareas"
+        android:text="@string/tarea"
         android:textSize="24sp"
         android:layout_margin="16dp"
         android:textStyle="bold" />
@@ -28,7 +27,8 @@
         android:id="@+id/rvTareas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/divider" />
+        android:layout_below="@id/divider"
+        android:layout_above="@+id/btnCrearTarea" />
 
     <!-- Texto cuando no hay tareas -->
     <TextView
@@ -41,5 +41,16 @@
         android:textColor="#888"
         android:visibility="gone"
         android:layout_centerInParent="true" />
+
+    <!-- Botón para crear nueva tarea -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCrearTarea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+    android:tint="@android:color/white"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentEnd="true"
+    android:layout_margin="16dp" />
 
 </RelativeLayout>

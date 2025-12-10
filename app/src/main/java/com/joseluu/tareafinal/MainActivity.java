@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btnEmpezar =findViewById(R.id.btnEmpezar);
+        Button btnCrearActividad = findViewById(R.id.btnCrearTarea);
 
         btnEmpezar.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ListadoTareasActivity.class);
@@ -27,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
             TODO: migrate intent to new manager class
             new IntentManager().startActivityWithIntent(MainActivity.this, ListadoTareasActivity.class);
              */
+
+            startActivity(intent);
+        });
+
+        btnCrearActividad.setOnClickListener(v ->{
+            Intent intent = new Intent(MainActivity.this, CrearTareaActivity.class);
 
             startActivity(intent);
         });

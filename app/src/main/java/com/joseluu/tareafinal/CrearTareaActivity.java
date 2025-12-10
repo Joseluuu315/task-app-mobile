@@ -1,24 +1,53 @@
 package com.joseluu.tareafinal;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.joseluu.tareafinal.fragment.FragmentoPasoDos;
+import com.joseluu.tareafinal.fragment.FragmentoPasoUno;
+import com.joseluu.tareafinal.model.Tarea;
+import com.joseluu.tareafinal.view.FormularioViewModel;
+
+import java.util.ArrayList;
 
 public class CrearTareaActivity extends AppCompatActivity {
+
+    FormularioViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_crear_tarea);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        viewModel = new ViewModelProvider(this).get(FormularioViewModel.class);
+
+        // Cargar primer fragmento
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.contenedorFragmentos, new FragmentoPasoUno())
+                .commit();
+    }
+
+    public void cargarPaso2() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.contenedorFragmentos, new FragmentoPasoDos())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void volverPaso1() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+
+    public void guardarTareaYSalir(Tarea nueva) {
+        Intent data = new Intent();
+        data.putExtra("TAREA_NUEVA", (Parcelable) nueva);
+        setResult(RESULT_OK, data);
+
+        finish();
     }
 }
