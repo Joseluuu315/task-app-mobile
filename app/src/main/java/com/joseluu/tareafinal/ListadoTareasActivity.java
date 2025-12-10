@@ -39,12 +39,14 @@ public class ListadoTareasActivity extends AppCompatActivity {
         rv.setRecyclerListener(new RecyclerView.RecyclerListener() {
             @Override
             public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-                Toast.makeText(getBaseContext(), "Posicion: " + holder.getAdapterPosition(), Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
+    /*
+    In this methods i can create data to see RecyclerView
+     */
     public void init(){
         datos.add(new Tarea("Penelope", "Juega", 2, new Date(), new Date(), true));
         datos.add(new Tarea("Penelope", "Juega", 2, new Date(), new Date(), true));
