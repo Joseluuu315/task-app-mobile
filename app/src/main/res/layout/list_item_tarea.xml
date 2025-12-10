@@ -16,35 +16,35 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Título + CheckBox -->
+        <!-- TÍTULO -->
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/tarea"
+            android:text="Tarea"
             android:textSize="18sp"
-            android:textStyle="bold"
             android:textColor="#1E1E1E"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/cbPrioritario"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- CHECKBOX PRIORITARIO -->
         <CheckBox
             android:id="@+id/cbPrioritario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/prioritario"
+            android:text="Prioritario"
             android:textSize="14sp"
             android:textColor="#333333"
             app:layout_constraintTop_toTopOf="@id/txtTitle"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Descripción -->
+        <!-- DESCRIPCIÓN -->
         <TextView
             android:id="@+id/txtDescripcion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/descripcion"
+            android:text="Descripción de la tarea"
             android:textSize="14sp"
             android:textColor="#555555"
             android:layout_marginTop="6dp"
@@ -52,48 +52,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Progreso -->
+        <!-- PROGRESO -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="0"
+            android:max="100"
+            app:layout_constraintTop_toBottomOf="@id/txtDescripcion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- DÍAS RESTANTES -->
         <TextView
-            android:id="@+id/txtProgreso"
+            android:id="@+id/txtDiasRestantes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Progreso"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="#1E1E1E"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtDescripcion" />
-
-        <!-- Fecha inicio -->
-        <EditText
-            android:id="@+id/txtDate1"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:text="@string/_0_d_as_restantes"
+            android:textSize="14sp"
             android:layout_marginTop="8dp"
-            android:padding="10dp"
-            android:hint="@string/fecha_inicio"
-            android:background="#F4F4F4"
-            android:inputType="date"
-            android:textColor="#000"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/txtDate2"
-            app:layout_constraintTop_toBottomOf="@id/txtProgreso" />
-
-        <!-- Fecha fin -->
-        <EditText
-            android:id="@+id/txtDate2"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:padding="10dp"
-            android:hint="@string/fecha_fin"
-            android:background="#F4F4F4"
-            android:inputType="date"
-            android:textColor="#000"
-            app:layout_constraintStart_toEndOf="@id/txtDate1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/txtDate1" />
+            android:textColor="#333"
+            app:layout_constraintTop_toBottomOf="@id/progressBar"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
