@@ -9,4 +9,5 @@
     <string name="fecha_fin">Fecha fin</string>
     <string name="fecha_inicio">Fecha inicio</string>
     <string name="progreso">Progreso</string>
+    <string name="_0_d_as_restantes">0 días restantes</string>
 </resources>
