@@ -45,7 +45,7 @@ public class CrearTareaActivity extends AppCompatActivity {
 
     public void guardarTareaYSalir(Tarea nueva) {
         Intent data = new Intent();
-        data.putExtra("TAREA_NUEVA", (Parcelable) nueva);
+        data.putExtra("TAREA_NUEVA", nueva);
         setResult(RESULT_OK, data);
 
         finish();
