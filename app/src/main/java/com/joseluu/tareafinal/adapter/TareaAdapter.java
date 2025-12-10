@@ -1,10 +1,14 @@
 package com.joseluu.tareafinal.adapter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.joseluu.tareafinal.R;
 import com.joseluu.tareafinal.model.Tarea;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHolder>{
+public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHolder> {
+
     private final ArrayList<Tarea> tareaData;
 
     public TareaAdapter(ArrayList<Tarea> tareaData) {
@@ -25,56 +34,87 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     @NonNull
     @Override
     public TareaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_tarea,parent,false);
+        View item = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_tarea, parent, false);
 
         return new TareaViewHolder(item);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TareaViewHolder holder, int position) {
-        //Asignamos el dato del array correspondiente a la posición actual al
-        //objeto ViewHolder, de forma que se represente en el RecyclerView.
         holder.bindTarea(tareaData.get(position));
     }
 
     @Override
     public int getItemCount() {
-        //Devolvemos el tamaño de array de datos de Capitales
         return tareaData.size();
     }
 
+    public static class TareaViewHolder extends RecyclerView.ViewHolder {
 
-    public static class TareaViewHolder extends RecyclerView.ViewHolder{
+        private final TextView txtTitle;
+        private final TextView txtDescripcion;
+        private final ProgressBar progressBar;
+        private final CheckBox cbPrioritario;
+        private final TextView txtDiasRestantes;
 
-        private final TextView titleTextView;
-        private final TextView descripcionTextView;
-        private TextView progresoTextView;
-        private TextView dateTextView1;
-        private TextView dateTextView2;
-        private final CheckBox prioritarioCheckBox;
-
-        //Metodo constructor
         public TareaViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            titleTextView = itemView.findViewById(R.id.txtTitle);
-            descripcionTextView = itemView.findViewById(R.id.txtDescripcion);
-            progresoTextView = itemView.findViewById(R.id.txtProgreso);
-            dateTextView1 = itemView.findViewById(R.id.txtDate1);
-            dateTextView2 = itemView.findViewById(R.id.txtDate2);
-            prioritarioCheckBox = itemView.findViewById(R.id.cbPrioritario);
+            txtTitle = itemView.findViewById(R.id.txtTitle);
+            txtDescripcion = itemView.findViewById(R.id.txtDescripcion);
+            progressBar = itemView.findViewById(R.id.progressBar);
+            cbPrioritario = itemView.findViewById(R.id.cbPrioritario);
+            txtDiasRestantes = itemView.findViewById(R.id.txtDiasRestantes);
         }
 
-        //Metodo que nos permitirá dar valores a cada campo del objeto ViewHolder y que
-        //el mismo pueda ser mostrado en el RecyclerView
         @SuppressLint("SetTextI18n")
         public void bindTarea(Tarea t) {
-            titleTextView.setText(t.getTitulo());
-            descripcionTextView.setText(t.getDescripcion());
-            progresoTextView.setText(t.getProgreso() + "%");
-            dateTextView1.setText(t.getFechaCreacion().toString());
-            dateTextView2.setText(t.getFechaObjectivo().toString());
-            prioritarioCheckBox.setChecked(t.isPrioritario());
+
+            txtTitle.setText(t.getTitulo());
+            txtDescripcion.setText(t.getDescripcion());
+
+            // PRIORIDAD (CheckBox)
+            cbPrioritario.setChecked(t.isPrioritario());
+
+            if (t.isPrioritario()) {
+                txtTitle.setTypeface(null, Typeface.BOLD);
+            } else {
+                txtTitle.setTypeface(null, Typeface.NORMAL);
+            }
+
+            // PROGRESO
+            progressBar.setProgress(t.getProgreso());
+
+            // FECHA -> días restantes
+            LocalDate fechaObj = t.getFechaObjectivo().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            LocalDate hoy = LocalDate.now();
+            long diasRestantes = ChronoUnit.DAYS.between(hoy, fechaObj);
+
+            txtDiasRestantes.setText(diasRestantes + " días restantes");
+
+            // Color rojo si atrasada
+            txtDiasRestantes.setTextColor(diasRestantes < 0 ? Color.RED : Color.BLACK);
+
+            // TACHADO si finalizada
+            if (t.getProgreso() == 100) {
+                txtTitle.setPaintFlags(txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                txtDiasRestantes.setText("0 días");
+            } else {
+                txtTitle.setPaintFlags(0);
+            }
+
+            // Mostrar descripción completa en Toast
+            itemView.setOnClickListener(v ->
+                    android.widget.Toast.makeText(
+                            v.getContext(),
+                            t.getDescripcion(),
+                            android.widget.Toast.LENGTH_LONG
+                    ).show()
+            );
         }
     }
 }
