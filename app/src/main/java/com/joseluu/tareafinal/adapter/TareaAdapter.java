@@ -26,9 +26,8 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     @Override
     public TareaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_tarea,parent,false);
-        TareaViewHolder tareaViewHolder = new TareaViewHolder(item);
 
-        return tareaViewHolder;
+        return new TareaViewHolder(item);
     }
 
     @Override
@@ -60,6 +59,9 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
 
             titleTextView = itemView.findViewById(R.id.txtTitle);
             descripcionTextView = itemView.findViewById(R.id.txtDescripcion);
+            progresoTextView = itemView.findViewById(R.id.txtProgreso);
+            dateTextView1 = itemView.findViewById(R.id.txtDate1);
+            dateTextView2 = itemView.findViewById(R.id.txtDate2);
             prioritarioCheckBox = itemView.findViewById(R.id.cbPrioritario);
         }
 
@@ -69,6 +71,9 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
         public void bindTarea(Tarea t) {
             titleTextView.setText(t.getTitulo());
             descripcionTextView.setText(t.getDescripcion());
+            progresoTextView.setText(t.getProgreso() + "%");
+            dateTextView1.setText(t.getFechaCreacion().toString());
+            dateTextView2.setText(t.getFechaObjectivo().toString());
             prioritarioCheckBox.setChecked(t.isPrioritario());
         }
     }
