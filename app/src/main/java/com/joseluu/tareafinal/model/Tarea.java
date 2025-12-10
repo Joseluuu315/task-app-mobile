@@ -79,6 +79,32 @@ public class Tarea implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-
+        dest.writeString(titulo);
+        dest.writeString(descripcion);
+        dest.writeInt(progreso);
+        dest.writeLong(fechaCreacion != null ? fechaCreacion.getTime() : 0);
+        dest.writeLong(fechaObjectivo != null ? fechaObjectivo.getTime() : 0);
+        dest.writeByte((byte) (prioritario ? 1 : 0));
     }
+
+    protected Tarea(Parcel in) {
+        titulo = in.readString();
+        descripcion = in.readString();
+        progreso = in.readInt();
+        fechaCreacion = new Date(in.readLong());
+        fechaObjectivo = new Date(in.readLong());
+        prioritario = in.readByte() != 0;
+    }
+
+    public static final Creator<Tarea> CREATOR = new Creator<Tarea>() {
+        @Override
+        public Tarea createFromParcel(Parcel in) {
+            return new Tarea(in);
+        }
+
+        @Override
+        public Tarea[] newArray(int size) {
+            return new Tarea[size];
+        }
+    };
 }
