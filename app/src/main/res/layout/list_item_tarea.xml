@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- LOGO + TÍTULO -->
         <ImageView
             android:id="@+id/imgLogo"
             android:layout_width="24dp"
@@ -40,7 +39,6 @@
             app:layout_constraintTop_toTopOf="@id/imgLogo"
             app:layout_constraintBottom_toBottomOf="@id/imgLogo"/>
 
-        <!-- CHECKBOX PRIORITARIO -->
         <CheckBox
             android:id="@+id/cbPrioritario"
             android:layout_width="wrap_content"
@@ -52,7 +50,6 @@
             app:layout_constraintBottom_toBottomOf="@id/txtTitle"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- DESCRIPCIÓN -->
         <TextView
             android:id="@+id/txtDescripcion"
             android:layout_width="0dp"
@@ -65,7 +62,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- PROGRESO -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="0dp"
@@ -78,7 +74,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- DÍAS RESTANTES -->
         <TextView
             android:id="@+id/txtDiasRestantes"
             android:layout_width="wrap_content"
