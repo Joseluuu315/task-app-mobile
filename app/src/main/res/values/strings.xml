@@ -15,4 +15,18 @@
     <string name="guardar">Guardar</string>
     <string name="crear_tarea">Crear Tarea</string>
     <string name="editar_tarea">Editar tarea</string>
+    <string name="txtTituloEditarTarea">Editar Tarea</string>
+    <string name="idTitulo">Titulo</string>
+    <string name="itFechaCreacion">Fecha de creacion</string>
+    <string name="itFechaObjetivo">Fecha objetivo</string>
+    <string name="itPrioritaria">Prioritaria</string>
+    <string name="itdescripcion">Descripción</string>
+    <string name="btnGuardar">Guardar</string>
+    <string name="btnVolver">Volver</string>
+    <string name="msgTareaGuardadaCorrectamente" >Tarea guardada correctamente</string>
+    <string name="msgTareaActualizada">Tarea Actualizada</string>
+    <string name="msgLaDescripcionEstaVacia">La descripción está vacía</string>
+    <string name="msgElTituloVacio">"El título está vacío"</string>
+    <string name="msg_fecha_creacion_vacia">La fecha de creación está vacía</string>
+    <string name="msg_fecha_objetivo_vacia">La fecha objetivo está vacía</string>
 </resources>

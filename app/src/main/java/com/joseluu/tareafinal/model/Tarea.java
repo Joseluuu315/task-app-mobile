@@ -72,6 +72,7 @@ public class Tarea implements Parcelable {
         this.prioritario = prioritario;
     }
 
+
     @Override
     public int describeContents() {
         return 0;

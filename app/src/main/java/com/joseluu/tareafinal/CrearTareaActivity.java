@@ -48,7 +48,8 @@ public class CrearTareaActivity extends AppCompatActivity {
         data.putExtra("TAREA_NUEVA", nueva);
         setResult(RESULT_OK, data);
 
-        finish(); // ¡ESTO ES SUFICIENTE!
+        finish();
+
 
     }
 }

@@ -75,11 +75,7 @@ public class FragmentoPasoUno extends Fragment {
             int[] valores = {0, 25, 50, 75, 100};
             viewModel.progreso.setValue(valores[spinnerProgreso.getSelectedItemPosition()]);
 
-            if (requireActivity() instanceof CrearTareaActivity) {
                 ((CrearTareaActivity) requireActivity()).cargarPaso2();
-            } else if (requireActivity() instanceof EditarTareaActivity) {
-                ((EditarTareaActivity) requireActivity()).cargarPaso2();
-            }
         });
     }
 

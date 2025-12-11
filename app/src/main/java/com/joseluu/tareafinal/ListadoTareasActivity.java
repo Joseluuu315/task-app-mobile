@@ -45,7 +45,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
         rvTareas.setAdapter(adaptador);
         rvTareas.setLayoutManager(new LinearLayoutManager(this));
 
-        actualizarVisibilidad();
+        actualizerVisibilities();
 
         // Registrar launcher para recibir la tarea creada
         crearTareaLauncher = registerForActivityResult(
@@ -66,7 +66,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
                                 adaptador.notifyItemInserted(0);
 
                                 rvTareas.scrollToPosition(0);
-                                actualizarVisibilidad();
+                                actualizerVisibilities();
                             }
                         }
                     }
@@ -81,7 +81,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
         });
     }
 
-    private void actualizarVisibilidad() {
+    private void actualizerVisibilities() {
         if (datos.isEmpty()) {
             rvTareas.setVisibility(View.GONE);
             txtNoTareas.setVisibility(View.VISIBLE);

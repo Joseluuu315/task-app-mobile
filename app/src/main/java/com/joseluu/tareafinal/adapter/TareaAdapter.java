@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.joseluu.tareafinal.R;
 import com.joseluu.tareafinal.model.Tarea;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;

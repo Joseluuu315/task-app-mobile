@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.joseluu.tareafinal.CrearTareaActivity;
-import com.joseluu.tareafinal.EditarTareaActivity;
 import com.joseluu.tareafinal.R;
 import com.joseluu.tareafinal.model.Tarea;
 import com.joseluu.tareafinal.view.FormularioViewModel;
@@ -39,10 +38,7 @@ public class FragmentoPasoDos extends Fragment {
         precargarDescripcion();
 
         view.findViewById(R.id.btnVolver).setOnClickListener(v -> {
-            if (requireActivity() instanceof CrearTareaActivity)
-                ((CrearTareaActivity) requireActivity()).volverPaso1();
-            else if (requireActivity() instanceof EditarTareaActivity)
-                ((EditarTareaActivity) requireActivity()).volverPaso1();
+            ((CrearTareaActivity) requireActivity()).volverPaso1();
         });
 
         view.findViewById(R.id.btnGuardar).setOnClickListener(v -> guardar());
@@ -63,11 +59,7 @@ public class FragmentoPasoDos extends Fragment {
 
         Tarea tarea = new Tarea(titulo, descripcion, progreso, fechaCreacion, fechaObjetivo, prioritaria);
 
-        if (requireActivity() instanceof CrearTareaActivity) {
             ((CrearTareaActivity) requireActivity()).guardarTareaYSalir(tarea);
-        } else if (requireActivity() instanceof EditarTareaActivity) {
-            ((EditarTareaActivity) requireActivity()).guardarTareaEditada(tarea);
-        }
     }
 }
 
