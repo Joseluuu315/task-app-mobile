@@ -49,5 +49,6 @@ public class CrearTareaActivity extends AppCompatActivity {
         setResult(RESULT_OK, data);
 
         finish();
+        startActivity(new Intent(CrearTareaActivity.this, ListadoTareasActivity.class));
     }
 }

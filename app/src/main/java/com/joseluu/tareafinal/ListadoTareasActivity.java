@@ -29,23 +29,24 @@ import java.util.Date;
 import java.util.Random;
 
 public class ListadoTareasActivity extends AppCompatActivity {
-    private final ArrayList<Tarea> datos = new ArrayList<>();
+    private ArrayList<Tarea> datos = new ArrayList<>();
     private RecyclerView rvTareas;
     private TextView txtNoTareas;
 
     // Declarar un launcher
     private ActivityResultLauncher<Intent> crearTareaLauncher;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listado_tareas);
 
+        //Initializar datos
         rvTareas = findViewById(R.id.rvTareas);
         txtNoTareas = findViewById(R.id.txtNoTareas);
 
-        // Inicializar datos y RecyclerView
-        init();
+
         TareaAdapter adaptador = new TareaAdapter(datos);
         rvTareas.setAdapter(adaptador);
         rvTareas.setLayoutManager(new LinearLayoutManager(this));
@@ -80,10 +81,11 @@ public class ListadoTareasActivity extends AppCompatActivity {
 
     }
 
+
     /*
     In this methods i can create data to see RecyclerView
      */
-    public void init(){
+    public ArrayList<Tarea> getDatos(){
         Random random = new Random();
 
         for (int i = 1; i <= 20; i++) {
@@ -107,6 +109,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
             ));
         }
 
+        return datos;
     }
 
 
