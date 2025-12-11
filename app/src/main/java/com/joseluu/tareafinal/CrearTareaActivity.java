@@ -48,7 +48,7 @@ public class CrearTareaActivity extends AppCompatActivity {
         data.putExtra("TAREA_NUEVA", nueva);
         setResult(RESULT_OK, data);
 
-        finish();
-        startActivity(new Intent(CrearTareaActivity.this, ListadoTareasActivity.class));
+        finish(); // ¡ESTO ES SUFICIENTE!
+
     }
 }
