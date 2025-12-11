@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -108,10 +109,10 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
 
             // Mostrar descripción completa en Toast
             itemView.setOnClickListener(v ->
-                    android.widget.Toast.makeText(
+                    Toast.makeText(
                             v.getContext(),
                             t.getDescripcion(),
-                            android.widget.Toast.LENGTH_LONG
+                            Toast.LENGTH_LONG
                     ).show()
             );
         }
