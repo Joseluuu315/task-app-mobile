@@ -53,7 +53,7 @@
         android:id="@+id/btnCrearTarea"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:text="Crear Tarea"
+        android:text="@string/crear_tarea"
         android:textAllCaps="false"
         android:textStyle="bold"
         android:backgroundTint="@color/white"
