@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.joseluu.tareafinal.CrearTareaActivity;
+import com.joseluu.tareafinal.EditarTareaActivity;
 import com.joseluu.tareafinal.R;
 import com.joseluu.tareafinal.manager.DatePickerFragment;
 import com.joseluu.tareafinal.view.FormularioViewModel;
@@ -54,13 +55,15 @@ public class FragmentoPasoUno extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerProgreso.setAdapter(adapter);
 
+        // Precargar datos si existen
+        precargarDatos();
+
         // DatePickers
         edtFechaCreacion.setOnClickListener(v -> mostrarDatePicker(edtFechaCreacion));
         edtFechaObjetivo.setOnClickListener(v -> mostrarDatePicker(edtFechaObjetivo));
 
         // Botón siguiente
         view.findViewById(R.id.btnSiguiente).setOnClickListener(v -> {
-
             if (edtTitulo.getText().toString().isEmpty()) {
                 Toast.makeText(getContext(), "Escribe un título", Toast.LENGTH_SHORT).show();
                 return;
@@ -69,12 +72,35 @@ public class FragmentoPasoUno extends Fragment {
             viewModel.titulo.setValue(edtTitulo.getText().toString());
             viewModel.prioritaria.setValue(cbPrioritaria.isChecked());
 
-            // Progreso → convertir a número
             int[] valores = {0, 25, 50, 75, 100};
             viewModel.progreso.setValue(valores[spinnerProgreso.getSelectedItemPosition()]);
 
-            ((CrearTareaActivity) requireActivity()).cargarPaso2();
+            if (requireActivity() instanceof CrearTareaActivity) {
+                ((CrearTareaActivity) requireActivity()).cargarPaso2();
+            } else if (requireActivity() instanceof EditarTareaActivity) {
+                ((EditarTareaActivity) requireActivity()).cargarPaso2();
+            }
         });
+    }
+
+    private void precargarDatos() {
+        if (viewModel.titulo.getValue() != null)
+            edtTitulo.setText(viewModel.titulo.getValue());
+
+        if (viewModel.fechaCreacion.getValue() != null)
+            edtFechaCreacion.setText(viewModel.fechaCreacion.getValue().toString());
+
+        if (viewModel.fechaObjetivo.getValue() != null)
+            edtFechaObjetivo.setText(viewModel.fechaObjetivo.getValue().toString());
+
+        if (viewModel.prioritaria.getValue() != null)
+            cbPrioritaria.setChecked(viewModel.prioritaria.getValue());
+
+        if (viewModel.progreso.getValue() != null) {
+            int progreso = viewModel.progreso.getValue();
+            int pos = progreso / 25; // porque usamos {0,25,50,75,100}
+            spinnerProgreso.setSelection(pos);
+        }
     }
 
     private void mostrarDatePicker(EditText campo) {
@@ -86,3 +112,4 @@ public class FragmentoPasoUno extends Fragment {
         picker.show(getParentFragmentManager(), "datePicker");
     }
 }
+
