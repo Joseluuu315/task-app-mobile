@@ -41,8 +41,8 @@ public class ListadoTareasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listado_tareas);
+        datos = new MainActivity().getDatos();
 
-        //Initializar datos
         rvTareas = findViewById(R.id.rvTareas);
         txtNoTareas = findViewById(R.id.txtNoTareas);
 
@@ -85,7 +85,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
     /*
     In this methods i can create data to see RecyclerView
      */
-    public ArrayList<Tarea> getDatos(){
+    public ArrayList<Tarea> init(){
         Random random = new Random();
 
         for (int i = 1; i <= 20; i++) {

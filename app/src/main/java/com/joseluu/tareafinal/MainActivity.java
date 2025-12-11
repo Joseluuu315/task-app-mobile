@@ -11,13 +11,27 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.joseluu.tareafinal.manager.IntentManager;
+import com.joseluu.tareafinal.model.Tarea;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private ArrayList<Tarea> datos = new ArrayList<>();
+
+    public ArrayList<Tarea> getDatos() {
+        return datos;
+    }
+
+    public void setDatos(ArrayList<Tarea> datos) {
+        this.datos = datos;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setDatos(new ListadoTareasActivity().init());
 
         Button btnEmpezar =findViewById(R.id.btnEmpezar);
         Button btnCrearActividad = findViewById(R.id.btnCrearTarea);
