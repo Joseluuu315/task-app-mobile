@@ -10,4 +10,8 @@
     <string name="fecha_inicio">Fecha inicio</string>
     <string name="progreso">Progreso</string>
     <string name="_0_d_as_restantes">0 días restantes</string>
+    <string name="descripci_n_completa">Descripción completa</string>
+    <string name="volver">Volver</string>
+    <string name="guardar">Guardar</string>
+    <string name="crear_tarea">Crear Tarea</string>
 </resources>
