@@ -1,56 +1,57 @@
 package com.joseluu.tareafinal;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.joseluu.tareafinal.manager.IntentManager;
+import com.joseluu.tareafinal.manager.ManagerMethods;
 import com.joseluu.tareafinal.model.Tarea;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<Tarea> datos = new ArrayList<>();
 
-    public ArrayList<Tarea> getDatos() {
-        return datos;
-    }
-
-    public void setDatos(ArrayList<Tarea> datos) {
-        this.datos = datos;
-    }
-
+    private ActivityResultLauncher<Intent> crearTareaDesdeMainLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setDatos(new ListadoTareasActivity().init());
 
-        Button btnEmpezar =findViewById(R.id.btnEmpezar);
+        Button btnEmpezar = findViewById(R.id.btnEmpezar);
         Button btnCrearActividad = findViewById(R.id.btnCrearTarea);
 
+        // --- REGISTRAR LAUNCHER PARA RECIBIR LA NUEVA TAREA ---
+        crearTareaDesdeMainLauncher =
+                registerForActivityResult(
+                        new ActivityResultContracts.StartActivityForResult(),
+                        result -> {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                Intent data = result.getData();
+                                if (data != null && data.hasExtra("TAREA_NUEVA")) {
+                                    Tarea nueva = data.getParcelableExtra("TAREA_NUEVA");
+                                    if (nueva != null) {
+                                        // Añadir la tarea al Singleton
+                                        ManagerMethods.getInstance().addTarea(nueva);
+                                    }
+                                }
+                            }
+                        }
+                );
+
+        // Ir a listado
         btnEmpezar.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ListadoTareasActivity.class);
-            /*
-            TODO: migrate intent to new manager class
-            new IntentManager().startActivityWithIntent(MainActivity.this, ListadoTareasActivity.class);
-             */
-
             startActivity(intent);
         });
 
-        btnCrearActividad.setOnClickListener(v ->{
+        // Crear tarea DESDE MAIN
+        btnCrearActividad.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CrearTareaActivity.class);
-
-            startActivity(intent);
+            crearTareaDesdeMainLauncher.launch(intent);
         });
-
     }
 }
