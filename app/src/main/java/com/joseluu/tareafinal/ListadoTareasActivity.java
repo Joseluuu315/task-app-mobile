@@ -42,6 +42,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listado_tareas);
         datos = new MainActivity().getDatos();
+        new MainActivity().setDatos(datos);
 
         rvTareas = findViewById(R.id.rvTareas);
         txtNoTareas = findViewById(R.id.txtNoTareas);
