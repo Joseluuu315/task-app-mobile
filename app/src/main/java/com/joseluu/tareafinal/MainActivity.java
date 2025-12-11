@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.joseluu.tareafinal.manager.ManagerMethods;
 import com.joseluu.tareafinal.model.Tarea;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnEmpezar = findViewById(R.id.btnEmpezar);
         Button btnCrearActividad = findViewById(R.id.btnCrearTarea);
+        Button btnChangeThemes = findViewById(R.id.btnThemesChange);
 
         // --- REGISTRAR LAUNCHER PARA RECIBIR LA NUEVA TAREA ---
         crearTareaDesdeMainLauncher =
@@ -52,6 +54,17 @@ public class MainActivity extends AppCompatActivity {
         btnCrearActividad.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CrearTareaActivity.class);
             crearTareaDesdeMainLauncher.launch(intent);
+        });
+
+        // Cambiar tema
+        btnChangeThemes.setOnClickListener(v -> {
+            int current = AppCompatDelegate.getDefaultNightMode();
+
+            if (current == AppCompatDelegate.MODE_NIGHT_YES) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
         });
     }
 }
