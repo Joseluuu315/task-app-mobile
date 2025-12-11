@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.joseluu.tareafinal.CrearTareaActivity;
+import com.joseluu.tareafinal.EditarTareaActivity;
 import com.joseluu.tareafinal.R;
 import com.joseluu.tareafinal.model.Tarea;
 import com.joseluu.tareafinal.view.FormularioViewModel;
@@ -35,24 +36,38 @@ public class FragmentoPasoDos extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(FormularioViewModel.class);
         edtDescripcion = view.findViewById(R.id.edtDescripcion);
 
-        view.findViewById(R.id.btnVolver).setOnClickListener(v ->
-                ((CrearTareaActivity) requireActivity()).volverPaso1()
-        );
+        precargarDescripcion();
 
-        view.findViewById(R.id.btnGuardar).setOnClickListener(v -> guardarTarea());
+        view.findViewById(R.id.btnVolver).setOnClickListener(v -> {
+            if (requireActivity() instanceof CrearTareaActivity)
+                ((CrearTareaActivity) requireActivity()).volverPaso1();
+            else if (requireActivity() instanceof EditarTareaActivity)
+                ((EditarTareaActivity) requireActivity()).volverPaso1();
+        });
+
+        view.findViewById(R.id.btnGuardar).setOnClickListener(v -> guardar());
     }
 
-    private void guardarTarea() {
-        // Asegurarse de no pasar null
-        String titulo = viewModel.titulo.getValue() != null ? viewModel.titulo.getValue() : "";
+    private void precargarDescripcion() {
+        if (viewModel.descripcion.getValue() != null)
+            edtDescripcion.setText(viewModel.descripcion.getValue());
+    }
+
+    private void guardar() {
+        String titulo = viewModel.titulo.getValue();
         String descripcion = edtDescripcion.getText().toString();
-        int progreso = viewModel.progreso.getValue() != null ? viewModel.progreso.getValue() : 0;
-        Date fechaCreacion = viewModel.fechaCreacion.getValue() != null ? viewModel.fechaCreacion.getValue() : new Date();
-        Date fechaObjetivo = viewModel.fechaObjetivo.getValue() != null ? viewModel.fechaObjetivo.getValue() : new Date();
-        boolean prioritaria = viewModel.prioritaria.getValue() != null && viewModel.prioritaria.getValue();
+        int progreso = viewModel.progreso.getValue();
+        Date fechaCreacion = viewModel.fechaCreacion.getValue();
+        Date fechaObjetivo = viewModel.fechaObjetivo.getValue();
+        boolean prioritaria = viewModel.prioritaria.getValue();
 
-        Tarea nueva = new Tarea(titulo, descripcion, progreso, fechaCreacion, fechaObjetivo, prioritaria);
+        Tarea tarea = new Tarea(titulo, descripcion, progreso, fechaCreacion, fechaObjetivo, prioritaria);
 
-        ((CrearTareaActivity) requireActivity()).guardarTareaYSalir(nueva);
+        if (requireActivity() instanceof CrearTareaActivity) {
+            ((CrearTareaActivity) requireActivity()).guardarTareaYSalir(tarea);
+        } else if (requireActivity() instanceof EditarTareaActivity) {
+            ((EditarTareaActivity) requireActivity()).guardarTareaEditada(tarea);
+        }
     }
 }
+
