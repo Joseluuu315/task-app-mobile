@@ -23,19 +23,16 @@ public class EditarTareaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ⚠️ Mismo layout que crear tarea
         setContentView(R.layout.activity_crear_tarea);
 
         viewModel = new ViewModelProvider(this).get(FormularioViewModel.class);
 
-        // ActionBar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("Editar Tarea");
         }
 
-        // Recibir tarea enviada desde ListadoTareasActivity
         tareaOriginal = getIntent().getParcelableExtra("TAREA_EDITAR");
 
         if (tareaOriginal != null) {
@@ -57,7 +54,6 @@ public class EditarTareaActivity extends AppCompatActivity {
         viewModel.prioritaria.setValue(tareaOriginal.isPrioritario());
     }
 
-    // Se llama desde FragmentoPasoUno
     public void cargarPaso2() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contenedorFragmentos, new FragmentoPasoDos())
@@ -65,12 +61,10 @@ public class EditarTareaActivity extends AppCompatActivity {
                 .commit();
     }
 
-    // Se llama desde FragmentoPasoDos
     public void volverPaso1() {
         getSupportFragmentManager().popBackStack();
     }
 
-    // SE LLAMA DESDE EL PASO 2 AL PULSAR "Guardar"
     public void guardarTareaEditada(Tarea modificada) {
 
         // Devolver tarea editada
