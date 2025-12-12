@@ -1,6 +1,7 @@
 package com.joseluu.tareafinal;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -8,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.joseluu.tareafinal.manager.ManagerMethods;
@@ -24,6 +27,13 @@ public class EditarTareaActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_tarea);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Editar Tarea");
+        }
+
 
         // Obtener posición de la tarea desde el Intent
         int tareaIndex = getIntent().getIntExtra("tareaIndex", -1);
@@ -90,5 +100,14 @@ public class EditarTareaActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.msgTareaActualizada), Toast.LENGTH_SHORT).show();
             finish();
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
