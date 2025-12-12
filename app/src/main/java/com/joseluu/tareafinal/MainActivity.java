@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         Button btnCrearActividad = findViewById(R.id.btnCrearTarea);
         Button btnChangeThemes = findViewById(R.id.btnThemesChange);
 
-        // --- REGISTRAR LAUNCHER PARA RECIBIR LA NUEVA TAREA ---
         crearTareaDesdeMainLauncher =
                 registerForActivityResult(
                         new ActivityResultContracts.StartActivityForResult(),
