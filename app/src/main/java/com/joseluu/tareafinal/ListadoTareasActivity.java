@@ -31,6 +31,9 @@ public class ListadoTareasActivity extends AppCompatActivity {
     private ArrayList<Tarea> datos;
 
     private ActivityResultLauncher<Intent> crearTareaLauncher;
+    private ActivityResultLauncher<Intent> editarTareaLauncher;
+
+    private int posicionEditando = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,20 +46,18 @@ public class ListadoTareasActivity extends AppCompatActivity {
             actionBar.setTitle("Lista Tareas");
         }
 
-        // Obtener siempre la MISMA lista desde el Singleton
         datos = ManagerMethods.getInstance().getDatos();
 
         rvTareas = findViewById(R.id.rvTareas);
         txtNoTareas = findViewById(R.id.txtNoTareas);
 
-        // Crear adaptador usando la misma lista (misma referencia)
         adaptador = new TareaAdapter(datos);
         rvTareas.setAdapter(adaptador);
         rvTareas.setLayoutManager(new LinearLayoutManager(this));
 
         actualizerVisibilities();
 
-        // Registrar launcher para recibir la tarea creada
+        // CREAR
         crearTareaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -64,16 +65,12 @@ public class ListadoTareasActivity extends AppCompatActivity {
                         Intent data = result.getData();
 
                         if (data != null && data.hasExtra("TAREA_NUEVA")) {
-
                             Tarea nueva = data.getParcelableExtra("TAREA_NUEVA");
 
                             if (nueva != null) {
-                                // Añadir a la lista del Singleton (MISMA lista del adapter)
                                 ManagerMethods.getInstance().addTarea(nueva);
 
-                                // Notificar al adaptador
                                 adaptador.notifyItemInserted(0);
-
                                 rvTareas.scrollToPosition(0);
                                 actualizerVisibilities();
                             }
@@ -82,12 +79,53 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 }
         );
 
-        // Botón para crear tarea
+        // EDITAR
+        editarTareaLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+
+                        if (data != null && data.hasExtra("TAREA_EDITADA") && posicionEditando != -1) {
+
+                            Tarea editada = data.getParcelableExtra("TAREA_EDITADA");
+
+                            if (editada != null) {
+                                // Reemplazar en la lista
+                                datos.set(posicionEditando, editada);
+
+                                // Notificar al adaptador
+                                adaptador.notifyItemChanged(posicionEditando);
+                                actualizerVisibilities();
+                            }
+                        }
+                    }
+                }
+        );
+
+        // Pulsar botón crear
         FloatingActionButton btnCrearTarea = findViewById(R.id.btnCrearTarea);
         btnCrearTarea.setOnClickListener(v -> {
             Intent intent = new Intent(this, CrearTareaActivity.class);
             crearTareaLauncher.launch(intent);
         });
+
+        adaptador.setOnEditListener((tarea, position, view) -> {
+            posicionEditando = position;
+
+            Intent intent = new Intent(this, EditarTareaActivity.class);
+            intent.putExtra("TAREA_EDITAR", tarea);
+
+            editarTareaLauncher.launch(intent);
+        });
+
+        adaptador.setOnDeleteListener(position -> {
+            datos.remove(position);
+            adaptador.notifyItemRemoved(position);
+            actualizerVisibilities();
+        });
+
+
     }
 
     @Override
@@ -96,7 +134,6 @@ public class ListadoTareasActivity extends AppCompatActivity {
             finish();
             return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }

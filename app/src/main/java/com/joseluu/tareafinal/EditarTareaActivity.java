@@ -1,109 +1,88 @@
 package com.joseluu.tareafinal;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.joseluu.tareafinal.manager.ManagerMethods;
+import com.joseluu.tareafinal.fragment.FragmentoPasoDos;
+import com.joseluu.tareafinal.fragment.FragmentoPasoUno;
 import com.joseluu.tareafinal.model.Tarea;
-
-import java.util.Date;
+import com.joseluu.tareafinal.view.FormularioViewModel;
 
 public class EditarTareaActivity extends AppCompatActivity {
 
-    private Tarea tarea;
+    private FormularioViewModel viewModel;
+    private Tarea tareaOriginal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editar_tarea);
 
+        // ⚠️ Mismo layout que crear tarea
+        setContentView(R.layout.activity_crear_tarea);
+
+        viewModel = new ViewModelProvider(this).get(FormularioViewModel.class);
+
+        // ActionBar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("Editar Tarea");
         }
 
+        // Recibir tarea enviada desde ListadoTareasActivity
+        tareaOriginal = getIntent().getParcelableExtra("TAREA_EDITAR");
 
-        // Obtener posición de la tarea desde el Intent
-        int tareaIndex = getIntent().getIntExtra("tareaIndex", -1);
-        if (tareaIndex == -1) {
-            finish();
-            return;
+        if (tareaOriginal != null) {
+            precargarDatosEnViewModel();
         }
 
-        tarea = ManagerMethods.getInstance().getDatos().get(tareaIndex);
+        // Cargar fragmento inicial (Paso 1)
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.contenedorFragmentos, new FragmentoPasoUno())
+                .commit();
+    }
 
+    private void precargarDatosEnViewModel() {
+        viewModel.titulo.setValue(tareaOriginal.getTitulo());
+        viewModel.descripcion.setValue(tareaOriginal.getDescripcion());
+        viewModel.progreso.setValue(tareaOriginal.getProgreso());
+        viewModel.fechaCreacion.setValue(tareaOriginal.getFechaCreacion());
+        viewModel.fechaObjetivo.setValue(tareaOriginal.getFechaObjectivo());
+        viewModel.prioritaria.setValue(tareaOriginal.isPrioritario());
+    }
 
-        // Referencias UI
-        EditText etTitulo = findViewById(R.id.etTituloEditar);
-        EditText etFechaCreacion = findViewById(R.id.etFechaCreacionEditar);
-        EditText etFechaObjetivo = findViewById(R.id.etFechaObjetivoEditar);
-        Spinner spProgreso = findViewById(R.id.spProgresoEditar);
-        CheckBox cbPrioritaria = findViewById(R.id.cbPrioritariaEditar);
-        EditText etDescripcion = findViewById(R.id.etDescripcionEditar);
-        Button btnGuardar = findViewById(R.id.btnGuardarEditar);
+    // Se llama desde FragmentoPasoUno
+    public void cargarPaso2() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.contenedorFragmentos, new FragmentoPasoDos())
+                .addToBackStack(null)
+                .commit();
+    }
 
-        // Cargar datos actuales
-        etTitulo.setText(tarea.getTitulo());
-        etFechaCreacion.setText(tarea.getFechaCreacion().toString());  // usa String, no toString()
-        etFechaObjetivo.setText(tarea.getFechaObjectivo().toString());
-        etDescripcion.setText(tarea.getDescripcion());
-        cbPrioritaria.setChecked(tarea.isPrioritario());
+    // Se llama desde FragmentoPasoDos
+    public void volverPaso1() {
+        getSupportFragmentManager().popBackStack();
+    }
 
-        // Spinner progreso
-        String[] opcionesProgreso = {
-                "No iniciada", "Iniciada", "Avanzada", "Casi finalizada", "Finalizada"
-        };
+    // SE LLAMA DESDE EL PASO 2 AL PULSAR "Guardar"
+    public void guardarTareaEditada(Tarea modificada) {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,   // ❌ antes: requireContext() → solo existe en Fragment
-                android.R.layout.simple_spinner_item,
-                opcionesProgreso
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spProgreso.setAdapter(adapter);
+        // Devolver tarea editada
+        Intent data = new Intent();
+        data.putExtra("TAREA_EDITADA", modificada);
 
-        // Valores reales del progreso
-        int[] valoresProgreso = {0, 25, 50, 75, 100};
-
-        // Preseleccionar según la tarea
-        int posProgreso = 0;
-        switch (tarea.getProgreso()) {
-            case 25: posProgreso = 1; break;
-            case 50: posProgreso = 2; break;
-            case 75: posProgreso = 3; break;
-            case 100: posProgreso = 4; break;
-        }
-        spProgreso.setSelection(posProgreso);
-
-        // Guardar cambios
-        btnGuardar.setOnClickListener(v -> {
-
-            tarea.setTitulo(etTitulo.getText().toString());
-            tarea.setFechaObjectivo(new Date(String.valueOf(etFechaObjetivo)));
-            tarea.setDescripcion(etDescripcion.getText().toString());
-            tarea.setPrioritario(cbPrioritaria.isChecked());
-
-            tarea.setProgreso(valoresProgreso[ spProgreso.getSelectedItemPosition() ]);
-
-            Toast.makeText(this, getString(R.string.msgTareaActualizada), Toast.LENGTH_SHORT).show();
-            finish();
-        });
+        setResult(Activity.RESULT_OK, data);
+        finish();
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
