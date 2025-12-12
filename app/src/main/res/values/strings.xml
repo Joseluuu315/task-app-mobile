@@ -30,4 +30,5 @@
     <string name="msg_fecha_creacion_vacia">La fecha de creación está vacía</string>
     <string name="msg_fecha_objetivo_vacia">La fecha objetivo está vacía</string>
     <string name="cambiar_tema">Cambiar tema</string>
+    <string name="no_hay_tareas">No hay tareas</string>
 </resources>
