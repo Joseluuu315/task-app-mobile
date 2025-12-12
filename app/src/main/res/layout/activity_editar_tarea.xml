@@ -1,49 +1,64 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="16dp"
+    android:paddingTop="?attr/actionBarSize"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
 
     <EditText
         android:id="@+id/etTituloEditar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/idTitulo" />
+        android:hint="@string/idTitulo"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?attr/colorOnSurfaceVariant" />
 
     <EditText
         android:id="@+id/etFechaCreacionEditar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:hint="@string/itFechaCreacion" />
+        android:hint="@string/itFechaCreacion"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?attr/colorOnSurfaceVariant" />
 
     <EditText
         android:id="@+id/etFechaObjetivoEditar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/itFechaObjetivo" />
+        android:hint="@string/itFechaObjetivo"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?attr/colorOnSurfaceVariant" />
 
     <Spinner
         android:id="@+id/spProgresoEditar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <CheckBox
         android:id="@+id/cbPrioritariaEditar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/itPrioritaria" />
+        android:text="@string/itPrioritaria"
+        android:textColor="?attr/colorOnSurface" />
 
     <EditText
         android:id="@+id/etDescripcionEditar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/itdescripcion" />
+        android:hint="@string/itdescripcion"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?attr/colorOnSurfaceVariant" />
 
     <Button
         android:id="@+id/btnGuardarEditar"
-        android:text="Guardar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/guardar"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary"
+        android:textStyle="bold"
+        android:textAllCaps="false" />
 
 </LinearLayout>
