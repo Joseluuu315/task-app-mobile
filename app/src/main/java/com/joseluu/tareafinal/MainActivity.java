@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -21,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActionBar actionBar = getSupportActionBar();
+
+        // Ocultar la barra de acción
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+
 
         Button btnEmpezar = findViewById(R.id.btnEmpezar);
         Button btnCrearActividad = findViewById(R.id.btnCrearTarea);
