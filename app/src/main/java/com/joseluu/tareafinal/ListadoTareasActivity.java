@@ -3,11 +3,14 @@ package com.joseluu.tareafinal;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +36,12 @@ public class ListadoTareasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listado_tareas);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Lista Tareas");
+        }
 
         // Obtener siempre la MISMA lista desde el Singleton
         datos = ManagerMethods.getInstance().getDatos();
@@ -79,6 +88,17 @@ public class ListadoTareasActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CrearTareaActivity.class);
             crearTareaLauncher.launch(intent);
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void actualizerVisibilities() {
