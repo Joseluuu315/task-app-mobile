@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
         private final ProgressBar progressBar;
         private final CheckBox cbPrioritario;
         private final TextView txtDiasRestantes;
+        private final ImageView imageView;
 
         public TareaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,6 +73,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             progressBar = itemView.findViewById(R.id.progressBar);
             cbPrioritario = itemView.findViewById(R.id.cbPrioritario);
             txtDiasRestantes = itemView.findViewById(R.id.txtDiasRestantes);
+            imageView = itemView.findViewById(R.id.imgPrioritaria);
         }
 
         @SuppressLint("SetTextI18n")
@@ -81,7 +84,14 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
 
             cbPrioritario.setChecked(t.isPrioritario());
 
-            txtTitle.setTypeface(null, t.isPrioritario() ? Typeface.BOLD : Typeface.NORMAL);
+            // Prioritaria → estrella + negrita
+            if (t.isPrioritario()) {
+                imageView.setImageResource(R.drawable.ic_star_filled);
+                txtTitle.setTypeface(null, Typeface.BOLD);
+            } else {
+                imageView.setImageResource(R.drawable.ic_star_outline);
+                txtTitle.setTypeface(null, Typeface.NORMAL);
+            }
 
             progressBar.setProgress(t.getProgreso());
 

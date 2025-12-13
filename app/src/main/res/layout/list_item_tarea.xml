@@ -17,27 +17,26 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/imgLogo"
+            android:id="@+id/imgPrioritaria"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/logo"
+            android:src="@drawable/ic_star_outline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#1E1E1E" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tarea"
+            android:text="@string/tarea"
             android:textColor="#1E1E1E"
             android:textSize="18sp"
             android:gravity="center_vertical"
             android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@id/imgLogo"
+            app:layout_constraintStart_toEndOf="@id/imgPrioritaria"
             app:layout_constraintEnd_toStartOf="@id/cbPrioritario"
-            app:layout_constraintTop_toTopOf="@id/imgLogo"
-            app:layout_constraintBottom_toBottomOf="@id/imgLogo"/>
+            app:layout_constraintTop_toTopOf="@id/imgPrioritaria"
+            app:layout_constraintBottom_toBottomOf="@id/imgPrioritaria"/>
 
         <CheckBox
             android:id="@+id/cbPrioritario"
@@ -58,7 +57,7 @@
             android:textSize="14sp"
             android:textColor="#555555"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/imgLogo"
+            app:layout_constraintTop_toBottomOf="@id/imgPrioritaria"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
