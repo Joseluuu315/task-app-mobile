@@ -31,4 +31,8 @@
     <string name="msg_fecha_objetivo_vacia">La fecha objetivo está vacía</string>
     <string name="cambiar_tema">Cambiar tema</string>
     <string name="no_hay_tareas">No hay tareas</string>
+    <string name="prioritarias">Prioritarias</string>
+    <string name="a_adir">Añadir</string>
+    <string name="acerca_de">Acerca de</string>
+    <string name="salir">Salir</string>
 </resources>
