@@ -1,11 +1,13 @@
 package com.joseluu.tareafinal;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -34,6 +36,14 @@ public class ListadoTareasActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> editarTareaLauncher;
 
     private int posicionEditando = -1;
+    private boolean mostrandoPrioritarias = false;
+    private ArrayList<Tarea> copiaCompleta;
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_listado, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,13 +140,39 @@ public class ListadoTareasActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
+
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
             finish();
+            return true;
+        }
+
+        if (id == R.id.menu_add) {
+            Intent intent = new Intent(this, CrearTareaActivity.class);
+            crearTareaLauncher.launch(intent);
+            return true;
+        }
+
+        if (id == R.id.menu_prioritarias) {
+            alternarPrioritarias();
+            return true;
+        }
+
+        if (id == R.id.menu_acerca) {
+            mostrarAcercaDe();
+            return true;
+        }
+
+        if (id == R.id.menu_salir) {
+            Toast.makeText(this, "Hasta pronto", Toast.LENGTH_SHORT).show();
+            finishAffinity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     private void actualizerVisibilities() {
         if (datos.isEmpty()) {
@@ -147,4 +183,44 @@ public class ListadoTareasActivity extends AppCompatActivity {
             txtNoTareas.setVisibility(View.GONE);
         }
     }
+
+    private void mostrarAcercaDe() {
+        new AlertDialog.Builder(this)
+                .setTitle("TrassTarea")
+                .setMessage(
+                        "TrassTarea\n\n" +
+                                "IES Trassierra\n\n" +
+                                "Autor: Jose Luque\n\n" +
+                                "Año: 2025"
+                )
+                .setPositiveButton("Aceptar", null)
+                .show();
+    }
+
+    private void alternarPrioritarias() {
+
+        if (!mostrandoPrioritarias) {
+
+            copiaCompleta = new ArrayList<>(datos);
+            datos.clear();
+
+            for (Tarea t : copiaCompleta) {
+                if (t.isPrioritario()) {
+                    datos.add(t);
+                }
+            }
+
+            mostrandoPrioritarias = true;
+
+        } else {
+
+            datos.clear();
+            datos.addAll(copiaCompleta);
+            mostrandoPrioritarias = false;
+        }
+
+        adaptador.notifyDataSetChanged();
+        actualizerVisibilities();
+    }
+
 }
