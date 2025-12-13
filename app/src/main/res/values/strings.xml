@@ -35,4 +35,5 @@
     <string name="a_adir">Añadir</string>
     <string name="acerca_de">Acerca de</string>
     <string name="salir">Salir</string>
+    <string name="cambiar_idioma">Cambiar Idioma\n</string>
 </resources>

@@ -2,6 +2,9 @@ package com.joseluu.tareafinal;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -13,6 +16,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.joseluu.tareafinal.manager.ManagerMethods;
 import com.joseluu.tareafinal.model.Tarea;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,5 +78,36 @@ public class MainActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             }
         });
+
+        Button btnLanguage = findViewById(R.id.btnLanguage);
+
+        btnLanguage.setOnClickListener(v -> {
+            Locale current = getResources().getConfiguration().getLocales().get(0);
+
+            if (current.getLanguage().equals("es")) {
+                setLocale("en");
+            } else {
+                setLocale("es");
+            }
+        });
     }
+
+    private void setLocale(String langCode) {
+        Locale locale = new Locale(langCode);
+        Locale.setDefault(locale);
+
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocale(locale);
+        } else {
+            config.locale = locale;
+        }
+
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+
+        recreate();
+    }
+
 }
