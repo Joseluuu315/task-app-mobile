@@ -188,9 +188,9 @@ public class ListadoTareasActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("TrassTarea")
                 .setMessage(
-                        "TrassTarea\n\n" +
+                        "Task Final\n\n" +
                                 "IES Trassierra\n\n" +
-                                "Autor: Jose Luque\n\n" +
+                                "Autor: Jose Luis Fuentes Parra\n\n" +
                                 "Año: 2025"
                 )
                 .setPositiveButton("Aceptar", null)
