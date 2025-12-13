@@ -62,7 +62,6 @@ public class FragmentoPasoUno extends Fragment {
         edtFechaCreacion.setOnClickListener(v -> mostrarDatePicker(edtFechaCreacion));
         edtFechaObjetivo.setOnClickListener(v -> mostrarDatePicker(edtFechaObjetivo));
 
-        // Botón siguiente
         view.findViewById(R.id.btnSiguiente).setOnClickListener(v -> {
             if (edtTitulo.getText().toString().isEmpty()) {
                 Toast.makeText(getContext(), "Escribe un título", Toast.LENGTH_SHORT).show();
@@ -75,8 +74,13 @@ public class FragmentoPasoUno extends Fragment {
             int[] valores = {0, 25, 50, 75, 100};
             viewModel.progreso.setValue(valores[spinnerProgreso.getSelectedItemPosition()]);
 
+            if (requireActivity() instanceof CrearTareaActivity) {
                 ((CrearTareaActivity) requireActivity()).cargarPaso2();
+            } else if (requireActivity() instanceof EditarTareaActivity) {
+                ((EditarTareaActivity) requireActivity()).cargarPaso2();
+            }
         });
+
     }
 
     private void precargarDatos() {
