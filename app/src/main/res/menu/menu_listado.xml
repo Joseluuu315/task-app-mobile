@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- BOTÓN AÑADIR -->
+    <item
+        android:id="@+id/menu_add"
+        android:title="@string/a_adir"
+        android:icon="@android:drawable/ic_input_add"
+        app:showAsAction="ifRoom|withText" />
+
+    <!-- BOTÓN PRIORITARIAS -->
+    <item
+        android:id="@+id/menu_prioritarias"
+        android:title="@string/prioritarias"
+        android:icon="@android:drawable/btn_star_big_on"
+        app:showAsAction="ifRoom|withText" />
+
+    <!-- OVERFLOW -->
+    <item
+        android:id="@+id/menu_acerca"
+        android:title="@string/acerca_de"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_salir"
+        android:title="@string/salir"
+        app:showAsAction="never" />
+</menu>
