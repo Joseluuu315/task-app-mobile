@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="14dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#DDDDDD"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imgPrioritaria"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_star_outline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/tarea"
+            android:textColor="#1E1E1E"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/imgPrioritaria"
+            app:layout_constraintTop_toTopOf="@id/imgPrioritaria"
+            app:layout_constraintBottom_toBottomOf="@id/imgPrioritaria"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"/>
+
+        <CheckBox
+            android:id="@+id/cbPrioritario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prioritario"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline"/>
+
+        <TextView
+            android:id="@+id/txtDescripcion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/descripcion"
+            android:textSize="14sp"
+            android:textColor="#555555"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/imgPrioritaria"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="0"
+            android:max="100"
+            app:layout_constraintTop_toBottomOf="@id/cbPrioritario"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/txtDiasRestantes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_0_d_as_restantes"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:textColor="#333"
+            app:layout_constraintTop_toBottomOf="@id/progressBar"
+            app:layout_constraintStart_toStartOf="@id/guideline"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
