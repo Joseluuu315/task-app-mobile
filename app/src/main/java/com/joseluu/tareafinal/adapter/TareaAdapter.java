@@ -169,6 +169,6 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     public void setOnDeleteListener(OnDeleteListener listener) {
         this.deleteListener = listener;
     }
-    
+
 
 }
