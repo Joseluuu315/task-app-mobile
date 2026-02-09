@@ -30,7 +30,7 @@ public class FragmentoPasoUno extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.crear_fragmento_uno, container, false);
     }
 
@@ -50,8 +50,7 @@ public class FragmentoPasoUno extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
-                new String[]{"No iniciada", "Iniciada", "Avanzada", "Casi finalizada", "Finalizada"}
-        );
+                new String[] { "No iniciada", "Iniciada", "Avanzada", "Casi finalizada", "Finalizada" });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerProgreso.setAdapter(adapter);
 
@@ -62,6 +61,11 @@ public class FragmentoPasoUno extends Fragment {
         edtFechaCreacion.setOnClickListener(v -> mostrarDatePicker(edtFechaCreacion));
         edtFechaObjetivo.setOnClickListener(v -> mostrarDatePicker(edtFechaObjetivo));
 
+        // Botón Cancelar
+        view.findViewById(R.id.btnCancelar).setOnClickListener(v -> {
+            requireActivity().finish();
+        });
+
         view.findViewById(R.id.btnSiguiente).setOnClickListener(v -> {
             if (edtTitulo.getText().toString().isEmpty()) {
                 Toast.makeText(getContext(), "Escribe un título", Toast.LENGTH_SHORT).show();
@@ -71,7 +75,7 @@ public class FragmentoPasoUno extends Fragment {
             viewModel.titulo.setValue(edtTitulo.getText().toString());
             viewModel.prioritaria.setValue(cbPrioritaria.isChecked());
 
-            int[] valores = {0, 25, 50, 75, 100};
+            int[] valores = { 0, 25, 50, 75, 100 };
             viewModel.progreso.setValue(valores[spinnerProgreso.getSelectedItemPosition()]);
 
             if (requireActivity() instanceof CrearTareaActivity) {
@@ -106,10 +110,11 @@ public class FragmentoPasoUno extends Fragment {
     private void mostrarDatePicker(EditText campo) {
         DatePickerFragment picker = new DatePickerFragment(date -> {
             campo.setText(date.toString());
-            if (campo == edtFechaCreacion) viewModel.fechaCreacion.setValue(date);
-            if (campo == edtFechaObjetivo) viewModel.fechaObjetivo.setValue(date);
+            if (campo == edtFechaCreacion)
+                viewModel.fechaCreacion.setValue(date);
+            if (campo == edtFechaObjetivo)
+                viewModel.fechaObjetivo.setValue(date);
         });
         picker.show(getParentFragmentManager(), "datePicker");
     }
 }
-

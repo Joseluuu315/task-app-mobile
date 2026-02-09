@@ -1,6 +1,7 @@
 package com.joseluu.tareafinal.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.joseluu.tareafinal.DescripcionActivity;
 import com.joseluu.tareafinal.EditarTareaActivity;
 import com.joseluu.tareafinal.R;
 import com.joseluu.tareafinal.manager.PreferenciasHelper;
@@ -120,9 +122,12 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
                 txtTitle.setPaintFlags(0);
             }
 
-            // Click normal para mostrar descripción en Toast
-            itemView.setOnClickListener(
-                    v -> Toast.makeText(v.getContext(), t.getDescripcion(), Toast.LENGTH_LONG).show());
+            // Click normal para abrir DescripcionActivity
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), DescripcionActivity.class);
+                intent.putExtra("TAREA", t);
+                v.getContext().startActivity(intent);
+            });
 
             // Long click para mostrar menú contextual
             itemView.setOnLongClickListener(v -> {
