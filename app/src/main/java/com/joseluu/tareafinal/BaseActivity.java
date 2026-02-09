@@ -14,6 +14,27 @@ public class BaseActivity extends AppCompatActivity
     private SharedPreferences prefs;
 
     @Override
+    protected void attachBaseContext(android.content.Context newBase) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(newBase);
+        // Obtenemos el valor de la fuente ("1", "2", "3")
+        String fuente = prefs.getString("fuente", "2");
+
+        float escala;
+        switch (fuente) {
+            case "1": escala = 0.85f; break; // Pequeña
+            case "3": escala = 1.30f; break; // Grande
+            default:  escala = 1.0f;  break; // Normal
+        }
+
+        android.content.res.Configuration config = new android.content.res.Configuration(newBase.getResources().getConfiguration());
+        config.fontScale = escala;
+
+        // Creamos el contexto con la nueva escala
+        android.content.Context context = newBase.createConfigurationContext(config);
+        super.attachBaseContext(context);
+    }
+    
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Aplicar tema antes de super.onCreate()
         aplicarTema();
@@ -47,12 +68,10 @@ public class BaseActivity extends AppCompatActivity
      */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("tema")) {
-            // Recrear la actividad para aplicar el nuevo tema
+        if (key.equals("tema") || key.equals("fuente")) {
+            // Al recrear la actividad, el onCreate volverá a ejecutarse
+            // y llamará a aplicarTema() y el onResume llamará a aplicarTamanoFuente()
             recreate();
-        } else if (key.equals("fuente")) {
-            // Aplicar el nuevo tamaño de fuente
-            aplicarTamanoFuente();
         }
     }
 
@@ -77,7 +96,7 @@ public class BaseActivity extends AppCompatActivity
     private void aplicarTamanoFuente() {
         String fuente = prefs.getString("fuente", "2");
         float tamano = 16f; // Mediana por defecto
-        
+
         switch (fuente) {
             case "1": // Pequeña
                 tamano = 12f;
