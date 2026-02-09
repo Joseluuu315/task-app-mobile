@@ -1,5 +1,6 @@
 package com.joseluu.tareafinal.fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,27 +18,37 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.joseluu.tareafinal.CrearTareaActivity;
 import com.joseluu.tareafinal.EditarTareaActivity;
 import com.joseluu.tareafinal.R;
+import com.joseluu.tareafinal.adapter.ArchivoEditableAdapter;
 import com.joseluu.tareafinal.model.ArchivoAdjunto;
 import com.joseluu.tareafinal.model.Tarea;
 import com.joseluu.tareafinal.view.FormularioViewModel;
 import com.joseluu.tareafinal.manager.FileStorageHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FragmentoPasoDos extends Fragment {
     private EditText edtDescripcion;
     private TextView txtSelectedFiles;
+    private RecyclerView rvExistingFiles;
     private FormularioViewModel viewModel;
+    private ArchivoEditableAdapter existingFilesAdapter;
 
-    // Map to store selected file URIs by type
+    // Map to store selected file URIs by type (for newly selected files)
     private Map<ArchivoAdjunto.TipoArchivo, Uri> selectedFiles = new HashMap<>();
     private Map<ArchivoAdjunto.TipoArchivo, String> selectedFileNames = new HashMap<>();
+
+    // List of files to delete (existing files marked for deletion)
+    private List<ArchivoAdjunto> filesToDelete = new ArrayList<>();
 
     // Activity result launchers for file pickers
     private ActivityResultLauncher<Intent> documentPickerLauncher;
@@ -64,12 +75,53 @@ public class FragmentoPasoDos extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(FormularioViewModel.class);
         edtDescripcion = view.findViewById(R.id.edtDescripcion);
         txtSelectedFiles = view.findViewById(R.id.txtSelectedFiles);
+        rvExistingFiles = view.findViewById(R.id.rvExistingFiles);
 
+        setupExistingFilesRecyclerView();
         precargarDescripcion();
+        precargarArchivosExistentes();
         setupFileButtons(view);
 
         view.findViewById(R.id.btnVolver).setOnClickListener(v -> volverPaso1());
         view.findViewById(R.id.btnGuardar).setOnClickListener(v -> guardar());
+    }
+
+    private void setupExistingFilesRecyclerView() {
+        existingFilesAdapter = new ArchivoEditableAdapter((archivo, position) -> {
+            // Show confirmation dialog before deleting
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Eliminar archivo")
+                    .setMessage("¿Eliminar " + archivo.getNombreArchivo() + "?")
+                    .setPositiveButton("Eliminar", (dialog, which) -> {
+                        // Mark for deletion
+                        filesToDelete.add(archivo);
+
+                        // Remove from current list
+                        List<ArchivoAdjunto> currentFiles = viewModel.archivosAdjuntos.getValue();
+                        if (currentFiles != null) {
+                            currentFiles.remove(archivo);
+                            viewModel.archivosAdjuntos.setValue(currentFiles);
+                            existingFilesAdapter.setArchivos(currentFiles);
+                        }
+
+                        Toast.makeText(requireContext(), "Archivo marcado para eliminar", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+        });
+
+        rvExistingFiles.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvExistingFiles.setAdapter(existingFilesAdapter);
+    }
+
+    private void precargarArchivosExistentes() {
+        List<ArchivoAdjunto> archivos = viewModel.archivosAdjuntos.getValue();
+        if (archivos != null && !archivos.isEmpty()) {
+            existingFilesAdapter.setArchivos(archivos);
+            rvExistingFiles.setVisibility(View.VISIBLE);
+        } else {
+            rvExistingFiles.setVisibility(View.GONE);
+        }
     }
 
     private void setupFilePickers() {
@@ -157,9 +209,9 @@ public class FragmentoPasoDos extends Fragment {
 
     private void updateSelectedFilesDisplay() {
         if (selectedFiles.isEmpty()) {
-            txtSelectedFiles.setText("Ningún archivo seleccionado");
+            txtSelectedFiles.setText("Ningún archivo nuevo seleccionado");
         } else {
-            StringBuilder sb = new StringBuilder("Archivos seleccionados:\n");
+            StringBuilder sb = new StringBuilder("Archivos nuevos:\n");
             for (Map.Entry<ArchivoAdjunto.TipoArchivo, String> entry : selectedFileNames.entrySet()) {
                 sb.append("• ").append(getTipoNombre(entry.getKey())).append(": ")
                         .append(entry.getValue()).append("\n");
@@ -206,7 +258,22 @@ public class FragmentoPasoDos extends Fragment {
 
         Tarea tarea = new Tarea(titulo, descripcion, progreso, fechaCreacion, fechaObjetivo, prioritaria);
 
-        // Save files to storage and add to tarea
+        // Add existing files (not marked for deletion)
+        List<ArchivoAdjunto> existingFiles = viewModel.archivosAdjuntos.getValue();
+        if (existingFiles != null) {
+            for (ArchivoAdjunto archivo : existingFiles) {
+                if (!filesToDelete.contains(archivo)) {
+                    tarea.addArchivoAdjunto(archivo);
+                }
+            }
+        }
+
+        // Delete files marked for deletion
+        for (ArchivoAdjunto archivo : filesToDelete) {
+            FileStorageHelper.deleteFile(archivo.getRutaArchivo());
+        }
+
+        // Save newly selected files to storage and add to tarea
         for (Map.Entry<ArchivoAdjunto.TipoArchivo, Uri> entry : selectedFiles.entrySet()) {
             String fileName = selectedFileNames.get(entry.getKey());
             String savedPath = FileStorageHelper.saveFileToStorage(

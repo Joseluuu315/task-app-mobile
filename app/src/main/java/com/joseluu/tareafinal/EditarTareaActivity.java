@@ -51,6 +51,11 @@ public class EditarTareaActivity extends BaseActivity {
         viewModel.fechaCreacion.setValue(tareaOriginal.getFechaCreacion());
         viewModel.fechaObjetivo.setValue(tareaOriginal.getFechaObjectivo());
         viewModel.prioritaria.setValue(tareaOriginal.isPrioritario());
+
+        // Load existing attachments
+        if (tareaOriginal.getArchivosAdjuntos() != null) {
+            viewModel.archivosAdjuntos.setValue(tareaOriginal.getArchivosAdjuntos());
+        }
     }
 
     public void cargarPaso2() {

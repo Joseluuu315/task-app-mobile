@@ -100,6 +100,23 @@
             android:padding="8dp" />
     </LinearLayout>
 
+    <!-- Existing Attachments (Edit Mode) -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Archivos actuales"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginTop="12dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExistingFiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:visibility="gone" />
+
     <!-- Display selected files -->
     <TextView
         android:id="@+id/txtSelectedFiles"
