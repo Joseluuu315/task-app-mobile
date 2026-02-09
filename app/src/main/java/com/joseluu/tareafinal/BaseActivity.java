@@ -33,7 +33,7 @@ public class BaseActivity extends AppCompatActivity
         android.content.Context context = newBase.createConfigurationContext(config);
         super.attachBaseContext(context);
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Aplicar tema antes de super.onCreate()
