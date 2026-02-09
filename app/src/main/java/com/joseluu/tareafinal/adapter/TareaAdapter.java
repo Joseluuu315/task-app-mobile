@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.joseluu.tareafinal.EditarTareaActivity;
 import com.joseluu.tareafinal.R;
+import com.joseluu.tareafinal.manager.PreferenciasHelper;
 import com.joseluu.tareafinal.model.Tarea;
 
 import java.time.LocalDate;
@@ -49,6 +51,14 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     @Override
     public void onBindViewHolder(@NonNull TareaViewHolder holder, int position) {
         holder.bindTarea(tareaData.get(position), position);
+
+        // Aplicar tamaños de fuente desde preferencias
+        float fontSize = PreferenciasHelper.getTamanoFuente(holder.itemView.getContext());
+        float titleSize = PreferenciasHelper.getTamanoFuenteTitulo(holder.itemView.getContext());
+
+        holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, titleSize);
+        holder.txtDescripcion.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        holder.txtDiasRestantes.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
 
     @Override
@@ -111,9 +121,8 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             }
 
             // Click normal para mostrar descripción en Toast
-            itemView.setOnClickListener(v ->
-                    Toast.makeText(v.getContext(), t.getDescripcion(), Toast.LENGTH_LONG).show()
-            );
+            itemView.setOnClickListener(
+                    v -> Toast.makeText(v.getContext(), t.getDescripcion(), Toast.LENGTH_LONG).show());
 
             // Long click para mostrar menú contextual
             itemView.setOnLongClickListener(v -> {
@@ -146,7 +155,6 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
                 return false;
             });
 
-
             popupMenu.show();
         }
     }
@@ -169,6 +177,5 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     public void setOnDeleteListener(OnDeleteListener listener) {
         this.deleteListener = listener;
     }
-
 
 }

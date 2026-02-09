@@ -7,7 +7,6 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.joseluu.tareafinal.fragment.FragmentoPasoDos;
@@ -17,10 +16,9 @@ import com.joseluu.tareafinal.view.FormularioViewModel;
 
 import java.util.ArrayList;
 
-public class CrearTareaActivity extends AppCompatActivity {
+public class CrearTareaActivity extends BaseActivity {
 
     FormularioViewModel viewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +32,6 @@ public class CrearTareaActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true); // habilita la flecha
             actionBar.setTitle("Crear Tarea");
         }
-
 
         // Cargar primer fragmento
         getSupportFragmentManager().beginTransaction()
@@ -62,14 +59,12 @@ public class CrearTareaActivity extends AppCompatActivity {
         getSupportFragmentManager().popBackStack();
     }
 
-
     public void guardarTareaYSalir(Tarea nueva) {
         Intent data = new Intent();
         data.putExtra("TAREA_NUEVA", nueva);
         setResult(RESULT_OK, data);
 
         finish();
-
 
     }
 }

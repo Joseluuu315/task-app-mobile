@@ -3,6 +3,7 @@ package com.joseluu.tareafinal;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,9 +24,15 @@ import com.joseluu.tareafinal.adapter.TareaAdapter;
 import com.joseluu.tareafinal.manager.ManagerMethods;
 import com.joseluu.tareafinal.model.Tarea;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class ListadoTareasActivity extends AppCompatActivity {
+public class ListadoTareasActivity extends AppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private RecyclerView rvTareas;
     private TextView txtNoTareas;
@@ -38,6 +46,8 @@ public class ListadoTareasActivity extends AppCompatActivity {
     private int posicionEditando = -1;
     private boolean mostrandoPrioritarias = false;
     private ArrayList<Tarea> copiaCompleta;
+
+    private SharedPreferences prefs;
 
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
@@ -56,6 +66,10 @@ public class ListadoTareasActivity extends AppCompatActivity {
             actionBar.setTitle("Lista Tareas");
         }
 
+        // Inicializar preferencias
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+
         datos = ManagerMethods.getInstance().getDatos();
 
         rvTareas = findViewById(R.id.rvTareas);
@@ -65,6 +79,8 @@ public class ListadoTareasActivity extends AppCompatActivity {
         rvTareas.setAdapter(adaptador);
         rvTareas.setLayoutManager(new LinearLayoutManager(this));
 
+        // Aplicar ordenación inicial
+        aplicarOrdenacion();
         actualizerVisibilities();
 
         // CREAR
@@ -80,8 +96,9 @@ public class ListadoTareasActivity extends AppCompatActivity {
                             if (nueva != null) {
                                 ManagerMethods.getInstance().addTarea(nueva);
 
-                                adaptador.notifyItemInserted(0);
-                                rvTareas.scrollToPosition(0);
+                                // Reordenar después de añadir
+                                aplicarOrdenacion();
+                                adaptador.notifyDataSetChanged();
                                 actualizerVisibilities();
                             }
                         }
@@ -101,11 +118,11 @@ public class ListadoTareasActivity extends AppCompatActivity {
                             Tarea editada = data.getParcelableExtra("TAREA_EDITADA");
 
                             if (editada != null) {
-                                // Reemplazar en la lista
                                 datos.set(posicionEditando, editada);
 
-                                // Notificar al adaptador
-                                adaptador.notifyItemChanged(posicionEditando);
+                                // Reordenar después de editar
+                                aplicarOrdenacion();
+                                adaptador.notifyDataSetChanged();
                                 actualizerVisibilities();
                             }
                         }
@@ -134,13 +151,35 @@ public class ListadoTareasActivity extends AppCompatActivity {
             adaptador.notifyItemRemoved(position);
             actualizerVisibilities();
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reaplicar ordenación al volver de Preferencias
+        aplicarOrdenacion();
+        adaptador.notifyDataSetChanged();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (prefs != null) {
+            prefs.unregisterOnSharedPreferenceChangeListener(this);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // Si cambian las preferencias de ordenación, reaplicar
+        if (key.equals("criterio") || key.equals("orden")) {
+            aplicarOrdenacion();
+            adaptador.notifyDataSetChanged();
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
@@ -159,6 +198,12 @@ public class ListadoTareasActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.menu_preferencias) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         if (id == R.id.menu_acerca) {
             mostrarAcercaDe();
             return true;
@@ -173,6 +218,63 @@ public class ListadoTareasActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Aplica la ordenación según las preferencias guardadas
+     */
+    private void aplicarOrdenacion() {
+        String criterioStr = prefs.getString("criterio", "2");
+        int criterio = Integer.parseInt(criterioStr);
+        boolean ascendente = prefs.getBoolean("orden", true);
+
+        Comparator<Tarea> comparador = null;
+
+        switch (criterio) {
+            case 1: // Alfabético
+                comparador = (t1, t2) -> {
+                    int result = t1.getTitulo().compareToIgnoreCase(t2.getTitulo());
+                    return ascendente ? result : -result;
+                };
+                break;
+
+            case 2: // Fecha de creación (default)
+                comparador = (t1, t2) -> {
+                    int result = t1.getFechaCreacion().compareTo(t2.getFechaCreacion());
+                    return ascendente ? result : -result;
+                };
+                break;
+
+            case 3: // Días restantes
+                comparador = (t1, t2) -> {
+                    long dias1 = calcularDiasRestantes(t1);
+                    long dias2 = calcularDiasRestantes(t2);
+                    int result = Long.compare(dias1, dias2);
+                    return ascendente ? result : -result;
+                };
+                break;
+
+            case 4: // Progreso
+                comparador = (t1, t2) -> {
+                    int result = Integer.compare(t1.getProgreso(), t2.getProgreso());
+                    return ascendente ? result : -result;
+                };
+                break;
+        }
+
+        if (comparador != null) {
+            Collections.sort(datos, comparador);
+        }
+    }
+
+    /**
+     * Calcula los días restantes hasta la fecha objetivo
+     */
+    private long calcularDiasRestantes(Tarea tarea) {
+        LocalDate fechaObj = tarea.getFechaObjectivo().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate hoy = LocalDate.now();
+        return ChronoUnit.DAYS.between(hoy, fechaObj);
+    }
 
     private void actualizerVisibilities() {
         if (datos.isEmpty()) {
@@ -198,9 +300,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
     }
 
     private void alternarPrioritarias() {
-
         if (!mostrandoPrioritarias) {
-
             copiaCompleta = new ArrayList<>(datos);
             datos.clear();
 
@@ -211,16 +311,15 @@ public class ListadoTareasActivity extends AppCompatActivity {
             }
 
             mostrandoPrioritarias = true;
-
         } else {
-
             datos.clear();
             datos.addAll(copiaCompleta);
             mostrandoPrioritarias = false;
         }
 
+        // Aplicar ordenación después de filtrar
+        aplicarOrdenacion();
         adaptador.notifyDataSetChanged();
         actualizerVisibilities();
     }
-
 }

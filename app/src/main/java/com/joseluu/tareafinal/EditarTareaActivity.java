@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.joseluu.tareafinal.fragment.FragmentoPasoDos;
@@ -14,7 +13,7 @@ import com.joseluu.tareafinal.fragment.FragmentoPasoUno;
 import com.joseluu.tareafinal.model.Tarea;
 import com.joseluu.tareafinal.view.FormularioViewModel;
 
-public class EditarTareaActivity extends AppCompatActivity {
+public class EditarTareaActivity extends BaseActivity {
 
     private FormularioViewModel viewModel;
     private Tarea tareaOriginal;

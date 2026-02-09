@@ -19,7 +19,7 @@ import com.joseluu.tareafinal.model.Tarea;
 
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity{
 
     private ActivityResultLauncher<Intent> crearTareaDesdeMainLauncher;
 
