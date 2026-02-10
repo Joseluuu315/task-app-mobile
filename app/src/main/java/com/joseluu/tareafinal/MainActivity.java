@@ -36,8 +36,6 @@ public class MainActivity extends BaseActivity{
 
 
         Button btnEmpezar = findViewById(R.id.btnEmpezar);
-        Button btnCrearActividad = findViewById(R.id.btnCrearTarea);
-        Button btnChangeThemes = findViewById(R.id.btnThemesChange);
 
         crearTareaDesdeMainLauncher =
                 registerForActivityResult(
@@ -60,23 +58,6 @@ public class MainActivity extends BaseActivity{
         btnEmpezar.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ListadoTareasActivity.class);
             startActivity(intent);
-        });
-
-        // Crear tarea DESDE MAIN
-        btnCrearActividad.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CrearTareaActivity.class);
-            crearTareaDesdeMainLauncher.launch(intent);
-        });
-
-        // Cambiar tema
-        btnChangeThemes.setOnClickListener(v -> {
-            int current = AppCompatDelegate.getDefaultNightMode();
-
-            if (current == AppCompatDelegate.MODE_NIGHT_YES) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
         });
 
         Button btnLanguage = findViewById(R.id.btnLanguage);
