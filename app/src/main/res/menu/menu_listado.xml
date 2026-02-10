@@ -30,8 +30,14 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_estadisticas"
+        android:title="Estadísticas"
+        android:orderInCategory="3"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_salir"
         android:title="@string/salir"
-        android:orderInCategory="3"
+        android:orderInCategory="4"
         app:showAsAction="never" />
 </menu>
