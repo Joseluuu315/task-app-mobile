@@ -40,6 +40,10 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.recyclerview)
     implementation(libs.preference)
+    
+    // Room dependencies
+    implementation("androidx.room:room-ktx:2.6.1")
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
