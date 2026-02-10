@@ -70,13 +70,26 @@ public class EditarTareaActivity extends BaseActivity {
     }
 
     public void guardarTareaEditada(Tarea modificada) {
+        if (tareaOriginal != null) {
+            modificada.setId(tareaOriginal.getId());
+        }
 
-        // Devolver tarea editada
-        Intent data = new Intent();
-        data.putExtra("TAREA_EDITADA", modificada);
+        com.joseluu.tareafinal.repository.TareaRepository repository = com.joseluu.tareafinal.repository.TareaRepository
+                .getInstance(this);
 
-        setResult(Activity.RESULT_OK, data);
-        finish();
+        repository.updateTarea(modificada, result -> {
+            if (result) {
+                Intent data = new Intent();
+                // We don't necessarily need to return the object, ID is enough,
+                // but existing code might expect it. Repository is ssource of truth though.
+                data.putExtra("TAREA_EDITADA", modificada);
+                setResult(Activity.RESULT_OK, data);
+                finish();
+            } else {
+                android.widget.Toast.makeText(this, "Error al actualizar la tarea", android.widget.Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     @Override
