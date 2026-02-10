@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joseluu.tareafinal.adapter.TareaAdapter;
 import com.joseluu.tareafinal.manager.ManagerMethods;
 import com.joseluu.tareafinal.model.Tarea;
+import com.joseluu.tareafinal.repository.TareaRepository;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -49,6 +50,8 @@ public class ListadoTareasActivity extends AppCompatActivity
 
     private SharedPreferences prefs;
 
+    private TareaRepository repository;
+
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         getMenuInflater().inflate(R.menu.menu_listado, menu);
@@ -61,16 +64,20 @@ public class ListadoTareasActivity extends AppCompatActivity
         setContentView(R.layout.activity_listado_tareas);
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("Lista Tareas");
         }
+
+        // Inicializar repositorio
+        repository = TareaRepository.getInstance(this);
 
         // Inicializar preferencias
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        datos = ManagerMethods.getInstance().getDatos();
+        // Inicializar lista vacía
+        datos = new ArrayList<>();
 
         rvTareas = findViewById(R.id.rvTareas);
         txtNoTareas = findViewById(R.id.txtNoTareas);
@@ -79,56 +86,27 @@ public class ListadoTareasActivity extends AppCompatActivity
         rvTareas.setAdapter(adaptador);
         rvTareas.setLayoutManager(new LinearLayoutManager(this));
 
-        // Aplicar ordenación inicial
-        aplicarOrdenacion();
-        actualizerVisibilities();
+        // Cargar datos en onResume
 
         // CREAR
         crearTareaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-
-                        if (data != null && data.hasExtra("TAREA_NUEVA")) {
-                            Tarea nueva = data.getParcelableExtra("TAREA_NUEVA");
-
-                            if (nueva != null) {
-                                ManagerMethods.getInstance().addTarea(nueva);
-
-                                // Reordenar después de añadir
-                                aplicarOrdenacion();
-                                adaptador.notifyDataSetChanged();
-                                actualizerVisibilities();
-                            }
-                        }
+                        // La tarea ya se guardó en BD, al volver onResume recargará la lista
+                        Toast.makeText(this, "Tarea creada", Toast.LENGTH_SHORT).show();
                     }
-                }
-        );
+                });
 
         // EDITAR
         editarTareaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-
-                        if (data != null && data.hasExtra("TAREA_EDITADA") && posicionEditando != -1) {
-
-                            Tarea editada = data.getParcelableExtra("TAREA_EDITADA");
-
-                            if (editada != null) {
-                                datos.set(posicionEditando, editada);
-
-                                // Reordenar después de editar
-                                aplicarOrdenacion();
-                                adaptador.notifyDataSetChanged();
-                                actualizerVisibilities();
-                            }
-                        }
+                        // La tarea ya se actualizó en BD, al volver onResume recargará la lista
+                        Toast.makeText(this, "Tarea actualizada", Toast.LENGTH_SHORT).show();
                     }
-                }
-        );
+                });
 
         // Pulsar botón crear
         FloatingActionButton btnCrearTarea = findViewById(R.id.btnCrearTarea);
@@ -147,18 +125,23 @@ public class ListadoTareasActivity extends AppCompatActivity
         });
 
         adaptador.setOnDeleteListener(position -> {
-            datos.remove(position);
-            adaptador.notifyItemRemoved(position);
-            actualizerVisibilities();
+            Tarea tarea = datos.get(position);
+            repository.deleteTarea(tarea, result -> {
+                if (result) {
+                    Toast.makeText(this, "Tarea eliminada", Toast.LENGTH_SHORT).show();
+                    cargarTareas(); // Recargar lista
+                } else {
+                    Toast.makeText(this, "Error al eliminar", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Reaplicar ordenación al volver de Preferencias
-        aplicarOrdenacion();
-        adaptador.notifyDataSetChanged();
+        // Cargar tareas al volver de cualquier actividad (Crear, Editar, Preferencias)
+        cargarTareas();
     }
 
     @Override
@@ -171,10 +154,9 @@ public class ListadoTareasActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // Si cambian las preferencias de ordenación, reaplicar
+        // Si cambian las preferencias de ordenación, recargar
         if (key.equals("criterio") || key.equals("orden")) {
-            aplicarOrdenacion();
-            adaptador.notifyDataSetChanged();
+            cargarTareas();
         }
     }
 
@@ -215,65 +197,48 @@ public class ListadoTareasActivity extends AppCompatActivity
             return true;
         }
 
+        // Handle "Estadísticas" menu item
+        if (id == R.id.menu_estadisticas) {
+            Intent intent = new Intent(this, EstadisticasActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        // Assuming ID will be known once XML is updated, but for now checking title or
+        // handled in BaseActivity
+        // The instructions say "Añade una entrada en el menú principal... aparecerá en
+        // tercera posición... llamada 'Estadísticas'"
+
         return super.onOptionsItemSelected(item);
     }
 
     /**
-     * Aplica la ordenación según las preferencias guardadas
+     * Carga las tareas desde el repositorio aplicando filtros y ordenación
      */
-    private void aplicarOrdenacion() {
+    private void cargarTareas() {
         String criterioStr = prefs.getString("criterio", "2");
         int criterio = Integer.parseInt(criterioStr);
         boolean ascendente = prefs.getBoolean("orden", true);
 
-        Comparator<Tarea> comparador = null;
+        repository.getTareas(criterio, ascendente, mostrandoPrioritarias, list -> {
+            datos.clear();
+            datos.addAll(list);
+            adaptador.notifyDataSetChanged();
+            actualizerVisibilities();
 
-        switch (criterio) {
-            case 1: // Alfabético
-                comparador = (t1, t2) -> {
-                    int result = t1.getTitulo().compareToIgnoreCase(t2.getTitulo());
-                    return ascendente ? result : -result;
-                };
-                break;
-
-            case 2: // Fecha de creación (default)
-                comparador = (t1, t2) -> {
-                    int result = t1.getFechaCreacion().compareTo(t2.getFechaCreacion());
-                    return ascendente ? result : -result;
-                };
-                break;
-
-            case 3: // Días restantes
-                comparador = (t1, t2) -> {
-                    long dias1 = calcularDiasRestantes(t1);
-                    long dias2 = calcularDiasRestantes(t2);
-                    int result = Long.compare(dias1, dias2);
-                    return ascendente ? result : -result;
-                };
-                break;
-
-            case 4: // Progreso
-                comparador = (t1, t2) -> {
-                    int result = Integer.compare(t1.getProgreso(), t2.getProgreso());
-                    return ascendente ? result : -result;
-                };
-                break;
-        }
-
-        if (comparador != null) {
-            Collections.sort(datos, comparador);
-        }
+            // Update title or icon based on filter?
+            if (mostrandoPrioritarias) {
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setTitle("Tareas Prioritarias");
+            } else {
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setTitle("Lista Tareas");
+            }
+        });
     }
 
-    /**
-     * Calcula los días restantes hasta la fecha objetivo
-     */
-    private long calcularDiasRestantes(Tarea tarea) {
-        LocalDate fechaObj = tarea.getFechaObjectivo().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        LocalDate hoy = LocalDate.now();
-        return ChronoUnit.DAYS.between(hoy, fechaObj);
+    // Método obsoleto, reemplazado por cargarTareas() que delegar en repositorio
+    private void aplicarOrdenacion() {
+        cargarTareas();
     }
 
     private void actualizerVisibilities() {
@@ -293,33 +258,13 @@ public class ListadoTareasActivity extends AppCompatActivity
                         "Task Final\n\n" +
                                 "IES Trassierra\n\n" +
                                 "Autor: Jose Luis Fuentes Parra\n\n" +
-                                "Año: 2025"
-                )
+                                "Año: 2025")
                 .setPositiveButton("Aceptar", null)
                 .show();
     }
 
     private void alternarPrioritarias() {
-        if (!mostrandoPrioritarias) {
-            copiaCompleta = new ArrayList<>(datos);
-            datos.clear();
-
-            for (Tarea t : copiaCompleta) {
-                if (t.isPrioritario()) {
-                    datos.add(t);
-                }
-            }
-
-            mostrandoPrioritarias = true;
-        } else {
-            datos.clear();
-            datos.addAll(copiaCompleta);
-            mostrandoPrioritarias = false;
-        }
-
-        // Aplicar ordenación después de filtrar
-        aplicarOrdenacion();
-        adaptador.notifyDataSetChanged();
-        actualizerVisibilities();
+        mostrandoPrioritarias = !mostrandoPrioritarias;
+        cargarTareas();
     }
 }
