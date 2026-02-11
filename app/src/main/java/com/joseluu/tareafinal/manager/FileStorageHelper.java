@@ -11,22 +11,13 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Helper class for managing file storage
- * Handles saving and deleting files based on SD preference
- */
+
 public class FileStorageHelper {
 
     private static final String TAG = "FileStorageHelper";
     private static final String ATTACHMENTS_DIR = "task_attachments";
 
-    /**
-     * Get storage directory based on SD preference
-     * Uses PreferenciasHelper.getRutaAlmacenamiento()
-     * 
-     * @param context Application context
-     * @return Directory for storing attachments
-     */
+    
     public static File getStorageDirectory(Context context) {
         String basePath = PreferenciasHelper.getRutaAlmacenamiento(context);
         File dir = new File(basePath, ATTACHMENTS_DIR);
@@ -41,20 +32,13 @@ public class FileStorageHelper {
         return dir;
     }
 
-    /**
-     * Save file from URI to app storage
-     * 
-     * @param context  Application context
-     * @param fileUri  URI of the file to save
-     * @param fileName Desired file name
-     * @return Absolute path to saved file, or null on error
-     */
+    
     public static String saveFileToStorage(Context context, Uri fileUri, String fileName) {
         try {
             File storageDir = getStorageDirectory(context);
             File destinationFile = new File(storageDir, fileName);
 
-            // If file with same name exists, add timestamp
+            
             if (destinationFile.exists()) {
                 String timestamp = String.valueOf(System.currentTimeMillis());
                 String nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
@@ -63,7 +47,6 @@ public class FileStorageHelper {
                 destinationFile = new File(storageDir, fileName);
             }
 
-            // Copy file from URI to destination
             InputStream inputStream = context.getContentResolver().openInputStream(fileUri);
             if (inputStream == null) {
                 Log.e(TAG, "Failed to open input stream for URI: " + fileUri);
@@ -91,12 +74,7 @@ public class FileStorageHelper {
         }
     }
 
-    /**
-     * Delete file from storage
-     * 
-     * @param filePath Absolute path to file
-     * @return true if file was deleted, false otherwise
-     */
+    
     public static boolean deleteFile(String filePath) {
         if (filePath == null || filePath.isEmpty()) {
             return false;
@@ -116,12 +94,7 @@ public class FileStorageHelper {
         return false;
     }
 
-    /**
-     * Delete all attachments for a task
-     * 
-     * @param archivos List of attachments to delete
-     * @return Number of files successfully deleted
-     */
+    
     public static int deleteTaskAttachments(java.util.List<ArchivoAdjunto> archivos) {
         if (archivos == null || archivos.isEmpty()) {
             return 0;
@@ -137,12 +110,7 @@ public class FileStorageHelper {
         return deletedCount;
     }
 
-    /**
-     * Check if file exists at given path
-     * 
-     * @param filePath Absolute path to file
-     * @return true if file exists
-     */
+    
     public static boolean fileExists(String filePath) {
         if (filePath == null || filePath.isEmpty()) {
             return false;
@@ -150,13 +118,7 @@ public class FileStorageHelper {
         return new File(filePath).exists();
     }
 
-    /**
-     * Get file name from URI
-     * 
-     * @param context Application context
-     * @param uri     File URI
-     * @return File name, or "unknown" if unable to determine
-     */
+    
     public static String getFileName(Context context, Uri uri) {
         String fileName = "archivo_" + System.currentTimeMillis();
 

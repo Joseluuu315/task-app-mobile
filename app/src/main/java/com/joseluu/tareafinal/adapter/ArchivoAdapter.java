@@ -15,9 +15,7 @@ import com.joseluu.tareafinal.model.ArchivoAdjunto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Adapter for displaying file attachments in DescripcionActivity
- */
+
 public class ArchivoAdapter extends RecyclerView.Adapter<ArchivoAdapter.ArchivoViewHolder> {
 
     private List<ArchivoAdjunto> archivos;
@@ -62,7 +60,7 @@ public class ArchivoAdapter extends RecyclerView.Adapter<ArchivoAdapter.ArchivoV
         public void bind(ArchivoAdjunto archivo) {
             txtFileName.setText(archivo.getNombreArchivo());
 
-            // Set icon based on file type
+            
             int iconRes;
             switch (archivo.getTipo()) {
                 case DOCUMENTO:

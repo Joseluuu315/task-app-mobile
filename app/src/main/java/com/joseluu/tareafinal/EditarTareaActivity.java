@@ -38,7 +38,7 @@ public class EditarTareaActivity extends BaseActivity {
             precargarDatosEnViewModel();
         }
 
-        // Cargar fragmento inicial (Paso 1)
+        
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contenedorFragmentos, new FragmentoPasoUno())
                 .commit();
@@ -52,7 +52,7 @@ public class EditarTareaActivity extends BaseActivity {
         viewModel.fechaObjetivo.setValue(tareaOriginal.getFechaObjectivo());
         viewModel.prioritaria.setValue(tareaOriginal.isPrioritario());
 
-        // Load existing attachments
+        
         if (tareaOriginal.getArchivosAdjuntos() != null) {
             viewModel.archivosAdjuntos.setValue(tareaOriginal.getArchivosAdjuntos());
         }
@@ -80,8 +80,8 @@ public class EditarTareaActivity extends BaseActivity {
         repository.updateTarea(modificada, result -> {
             if (result) {
                 Intent data = new Intent();
-                // We don't necessarily need to return the object, ID is enough,
-                // but existing code might expect it. Repository is ssource of truth though.
+                
+                
                 data.putExtra("TAREA_EDITADA", modificada);
                 setResult(Activity.RESULT_OK, data);
                 finish();

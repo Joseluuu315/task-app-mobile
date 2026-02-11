@@ -16,10 +16,7 @@ import com.joseluu.tareafinal.model.ArchivoAdjunto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Adapter for displaying and managing file attachments in edit mode
- * Allows deletion of attachments
- */
+
 public class ArchivoEditableAdapter extends RecyclerView.Adapter<ArchivoEditableAdapter.ArchivoViewHolder> {
 
     private List<ArchivoAdjunto> archivos;
@@ -76,7 +73,7 @@ public class ArchivoEditableAdapter extends RecyclerView.Adapter<ArchivoEditable
         public void bind(ArchivoAdjunto archivo, int position) {
             txtFileName.setText(archivo.getNombreArchivo());
 
-            // Set icon based on file type
+            
             int iconRes;
             switch (archivo.getTipo()) {
                 case DOCUMENTO:
@@ -96,7 +93,7 @@ public class ArchivoEditableAdapter extends RecyclerView.Adapter<ArchivoEditable
             }
             imgFileIcon.setImageResource(iconRes);
 
-            // Delete button click
+            
             btnDelete.setOnClickListener(v -> {
                 if (deleteListener != null) {
                     deleteListener.onArchivoDelete(archivo, position);

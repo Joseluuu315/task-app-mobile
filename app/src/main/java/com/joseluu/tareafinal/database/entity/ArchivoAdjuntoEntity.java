@@ -9,9 +9,7 @@ import androidx.room.PrimaryKey;
 
 import com.joseluu.tareafinal.model.ArchivoAdjunto;
 
-/**
- * ROOM Entity representing file attachments in the database
- */
+
 @Entity(tableName = "archivos_adjuntos", foreignKeys = @ForeignKey(entity = TareaEntity.class, parentColumns = "id", childColumns = "tarea_id", onDelete = ForeignKey.CASCADE), indices = {
         @Index("tarea_id") })
 public class ArchivoAdjuntoEntity {
@@ -35,7 +33,7 @@ public class ArchivoAdjuntoEntity {
     @ColumnInfo(name = "ruta_archivo")
     private String rutaArchivo;
 
-    // Constructor
+    
     public ArchivoAdjuntoEntity(int tareaId, @NonNull ArchivoAdjunto.TipoArchivo tipo,
             @NonNull String nombreArchivo, @NonNull String rutaArchivo) {
         this.tareaId = tareaId;
@@ -44,7 +42,7 @@ public class ArchivoAdjuntoEntity {
         this.rutaArchivo = rutaArchivo;
     }
 
-    // Getters and Setters
+    
     public int getId() {
         return id;
     }

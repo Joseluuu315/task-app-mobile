@@ -16,68 +16,64 @@ public class BaseActivity extends AppCompatActivity
     @Override
     protected void attachBaseContext(android.content.Context newBase) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(newBase);
-        // Obtenemos el valor de la fuente ("1", "2", "3")
+        
         String fuente = prefs.getString("fuente", "2");
 
         float escala;
         switch (fuente) {
-            case "1": escala = 0.85f; break; // Pequeña
-            case "3": escala = 1.30f; break; // Grande
-            default:  escala = 1.0f;  break; // Normal
+            case "1": escala = 0.85f; break; 
+            case "3": escala = 1.30f; break; 
+            default:  escala = 1.0f;  break; 
         }
 
         android.content.res.Configuration config = new android.content.res.Configuration(newBase.getResources().getConfiguration());
         config.fontScale = escala;
 
-        // Creamos el contexto con la nueva escala
+        
         android.content.Context context = newBase.createConfigurationContext(config);
         super.attachBaseContext(context);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Aplicar tema antes de super.onCreate()
+        
         aplicarTema();
         
         super.onCreate(savedInstanceState);
         
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         
-        // Registrar listener para cambios en las preferencias
+        
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Aplicar tamaño de fuente cuando la actividad se reanuda
+        
         aplicarTamanoFuente();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Desregistrar listener para evitar memory leaks
+        
         if (prefs != null) {
             prefs.unregisterOnSharedPreferenceChangeListener(this);
         }
     }
 
-    /**
-     * Se llama cuando cambia alguna preferencia
-     */
+    
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("tema") || key.equals("fuente")) {
-            // Al recrear la actividad, el onCreate volverá a ejecutarse
-            // y llamará a aplicarTema() y el onResume llamará a aplicarTamanoFuente()
+            
+            
             recreate();
         }
     }
 
-    /**
-     * Aplica el tema según la preferencia guardada
-     */
+    
     private void aplicarTema() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean temaClaro = prefs.getBoolean("tema", true);
@@ -89,36 +85,30 @@ public class BaseActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Aplica el tamaño de fuente a todos los TextViews de la actividad
-     * Este es un ejemplo básico. Para un control más fino, considera usar estilos.
-     */
+    
     private void aplicarTamanoFuente() {
         String fuente = prefs.getString("fuente", "2");
-        float tamano = 16f; // Mediana por defecto
+        float tamano = 16f; 
 
         switch (fuente) {
-            case "1": // Pequeña
+            case "1": 
                 tamano = 12f;
                 break;
-            case "3": // Grande
+            case "3": 
                 tamano = 20f;
                 break;
         }
         
-        // Este es un ejemplo simple. En una aplicación real, podrías
-        // recorrer todas las vistas y aplicar el tamaño, o mejor aún,
-        // usar estilos y themes personalizados.
         
-        // Nota: Para aplicar a vistas específicas, hazlo en cada Activity:
-        // TextView textView = findViewById(R.id.miTextView);
-        // textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, tamano);
+        
+        
+        
+        
+        
+        
     }
 
-    /**
-     * Método helper para obtener el tamaño de fuente actual
-     * @return Tamaño en SP
-     */
+    
     protected float getTamanoFuenteActual() {
         String fuente = prefs.getString("fuente", "2");
         switch (fuente) {
@@ -131,10 +121,7 @@ public class BaseActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Método helper para obtener el tamaño de fuente para títulos
-     * @return Tamaño en SP
-     */
+    
     protected float getTamanoFuenteTituloActual() {
         String fuente = prefs.getString("fuente", "2");
         switch (fuente) {

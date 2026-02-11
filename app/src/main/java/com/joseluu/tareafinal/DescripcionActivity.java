@@ -10,10 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.joseluu.tareafinal.adapter.ArchivoAdapter;
 import com.joseluu.tareafinal.model.Tarea;
 
-/**
- * Activity to display task description and attachments
- * Replaces the Toast dialog from TareaAdapter
- */
+
 public class DescripcionActivity extends BaseActivity {
 
     @Override
@@ -21,35 +18,35 @@ public class DescripcionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_descripcion);
 
-        // Get the task from intent
+        
         Tarea tarea = getIntent().getParcelableExtra("TAREA");
         if (tarea == null) {
             finish();
             return;
         }
 
-        // Setup action bar
+        
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Detalle de la Tarea");
         }
 
-        // Find views
+        
         TextView txtTitulo = findViewById(R.id.txtTituloDescripcion);
         TextView txtDescripcion = findViewById(R.id.txtDescripcion);
         RecyclerView rvArchivos = findViewById(R.id.rvArchivosAdjuntos);
         TextView txtNoAttachments = findViewById(R.id.txtNoAttachments);
 
-        // Set task data
+        
         txtTitulo.setText(tarea.getTitulo());
         txtDescripcion.setText(tarea.getDescripcion());
 
-        // Setup RecyclerView for attachments
+        
         ArchivoAdapter adapter = new ArchivoAdapter();
         rvArchivos.setLayoutManager(new LinearLayoutManager(this));
         rvArchivos.setAdapter(adapter);
 
-        // Load attachments
+        
         if (tarea.getArchivosAdjuntos() != null && !tarea.getArchivosAdjuntos().isEmpty()) {
             adapter.setArchivos(tarea.getArchivosAdjuntos());
             rvArchivos.setVisibility(View.VISIBLE);

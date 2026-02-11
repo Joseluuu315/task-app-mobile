@@ -7,9 +7,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-/**
- * ROOM Entity representing a task in the database
- */
+
 @Entity(tableName = "tareas")
 public class TareaEntity {
 
@@ -38,7 +36,7 @@ public class TareaEntity {
     @ColumnInfo(name = "descripcion")
     private String descripcion;
 
-    // Optional URL fields for future use
+    
     @ColumnInfo(name = "url_doc")
     private String urlDoc;
 
@@ -51,7 +49,7 @@ public class TareaEntity {
     @ColumnInfo(name = "url_vid")
     private String urlVid;
 
-    // Constructor
+    
     public TareaEntity(@NonNull String titulo, @NonNull Date fechaCreacion, @NonNull Date fechaObjetivo,
             int progreso, boolean prioritaria, String descripcion,
             String urlDoc, String urlImg, String urlAud, String urlVid) {
@@ -67,7 +65,7 @@ public class TareaEntity {
         this.urlVid = urlVid;
     }
 
-    // Getters and Setters
+    
     public int getId() {
         return id;
     }

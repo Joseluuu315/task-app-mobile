@@ -5,26 +5,21 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-/**
- * Modelo para archivos adjuntos a tareas
- * Soporta 4 tipos: DOCUMENTO, IMAGEN, AUDIO, VIDEO
- */
+
 public class ArchivoAdjunto implements Parcelable {
 
     private int id;
-    private int tareaId; // Foreign key to Tarea
+    private int tareaId; 
     private TipoArchivo tipo;
     private String nombreArchivo;
-    private String rutaArchivo; // Absolute path to file
+    private String rutaArchivo; 
 
-    /**
-     * Tipos de archivos adjuntos soportados
-     */
+    
     public enum TipoArchivo {
         DOCUMENTO, IMAGEN, AUDIO, VIDEO
     }
 
-    // Constructor
+    
     public ArchivoAdjunto(int id, int tareaId, TipoArchivo tipo, String nombreArchivo, String rutaArchivo) {
         this.id = id;
         this.tareaId = tareaId;
@@ -33,12 +28,12 @@ public class ArchivoAdjunto implements Parcelable {
         this.rutaArchivo = rutaArchivo;
     }
 
-    // Constructor sin ID (para nuevos archivos)
+    
     public ArchivoAdjunto(int tareaId, TipoArchivo tipo, String nombreArchivo, String rutaArchivo) {
         this(0, tareaId, tipo, nombreArchivo, rutaArchivo);
     }
 
-    // Getters and Setters
+    
     public int getId() {
         return id;
     }
@@ -79,7 +74,7 @@ public class ArchivoAdjunto implements Parcelable {
         this.rutaArchivo = rutaArchivo;
     }
 
-    // Parcelable implementation
+    
     @Override
     public int describeContents() {
         return 0;

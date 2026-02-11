@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity{
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
 
-        // Ocultar la barra de acción
+        
         if (actionBar != null) {
             actionBar.hide();
         }
@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity{
                                 if (data != null && data.hasExtra("TAREA_NUEVA")) {
                                     Tarea nueva = data.getParcelableExtra("TAREA_NUEVA");
                                     if (nueva != null) {
-                                        // Añadir la tarea al Singleton
+                                        
                                         ManagerMethods.getInstance().addTarea(nueva);
                                     }
                                 }
@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity{
                         }
                 );
 
-        // Ir a listado
+        
         btnEmpezar.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ListadoTareasActivity.class);
             startActivity(intent);

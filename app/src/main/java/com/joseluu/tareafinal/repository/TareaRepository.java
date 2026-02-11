@@ -50,13 +50,11 @@ public class TareaRepository {
         void onResult(T result);
     }
 
-    /**
-     * Get tasks with filtering and sorting from database
-     */
+    
     public void getTareas(int sortCriterion, boolean ascending, boolean onlyPriority,
             DataCallback<List<Tarea>> callback) {
         executor.execute(() -> {
-            // Build query
+            
             StringBuilder queryBuilder = new StringBuilder("SELECT * FROM tareas");
 
             if (onlyPriority) {
@@ -66,17 +64,17 @@ public class TareaRepository {
             queryBuilder.append(" ORDER BY ");
 
             switch (sortCriterion) {
-                case 1: // Alfabético
+                case 1: 
                     queryBuilder.append("titulo COLLATE NOCASE");
                     break;
-                case 2: // Fecha creación
+                case 2: 
                     queryBuilder.append("fecha_creacion");
                     break;
-                case 3: // Fecha objetivo (Days remaining)
-                    // Sorting by target date effectively sorts by days remaining relative to now
+                case 3: 
+                    
                     queryBuilder.append("fecha_objetivo");
                     break;
-                case 4: // Progreso
+                case 4: 
                     queryBuilder.append("progreso");
                     break;
                 default:
@@ -92,12 +90,12 @@ public class TareaRepository {
             SupportSQLiteQuery query = new SimpleSQLiteQuery(queryBuilder.toString());
             List<TareaEntity> entities = tareaDao.getTareas(query);
 
-            // Convert to Model objects with attachments
+            
             List<Tarea> tareas = new ArrayList<>();
             for (TareaEntity entity : entities) {
                 Tarea tarea = mapEntityToTarea(entity);
 
-                // Fetch attachments
+                
                 List<ArchivoAdjuntoEntity> attachmentEntities = archivoAdjuntoDao.getArchivosByTareaId(entity.getId());
                 List<ArchivoAdjunto> attachments = new ArrayList<>();
                 for (ArchivoAdjuntoEntity attEntity : attachmentEntities) {
@@ -119,7 +117,7 @@ public class TareaRepository {
                 long id = tareaDao.insert(entity);
                 tarea.setId((int) id);
 
-                // Insert attachments
+                
                 if (tarea.getArchivosAdjuntos() != null) {
                     for (ArchivoAdjunto adjunto : tarea.getArchivosAdjuntos()) {
                         adjunto.setTareaId((int) id);
@@ -141,11 +139,11 @@ public class TareaRepository {
                 TareaEntity entity = mapTareaToEntity(tarea);
                 tareaDao.update(entity);
 
-                // Update attachments: Simple strategy is delete all and re-insert
-                // or we could be smarter, but for now let's simple sync
-                // However, deleting all loses IDs if they are important.
-                // Better: keep existing logic or check diff.
-                // Given the app structure, let's delete all for this task and re-insert.
+                
+                
+                
+                
+                
                 archivoAdjuntoDao.deleteByTareaId(tarea.getId());
 
                 if (tarea.getArchivosAdjuntos() != null) {
@@ -166,7 +164,7 @@ public class TareaRepository {
     public void deleteTarea(Tarea tarea, DataCallback<Boolean> callback) {
         executor.execute(() -> {
             try {
-                // Attachments are deleted via CASCADE in database
+                
                 tareaDao.delete(mapTareaToEntity(tarea));
                 mainHandler.post(() -> callback.onResult(true));
             } catch (Exception e) {
@@ -176,7 +174,7 @@ public class TareaRepository {
         });
     }
 
-    // Statistics
+    
     public void getStatistics(DataCallback<StatisticsData> callback) {
         executor.execute(() -> {
             StatisticsData stats = new StatisticsData();
@@ -213,7 +211,7 @@ public class TareaRepository {
         public int count76to100;
     }
 
-    // Mappers
+    
     private TareaEntity mapTareaToEntity(Tarea tarea) {
         TareaEntity entity = new TareaEntity(
                 tarea.getTitulo(),
@@ -222,7 +220,7 @@ public class TareaRepository {
                 tarea.getProgreso(),
                 tarea.isPrioritario(),
                 tarea.getDescripcion(),
-                // Assuming we aren't using these fields yet based on plan approval
+                
                 null, null, null, null);
         if (tarea.getId() != 0) {
             entity.setId(tarea.getId());

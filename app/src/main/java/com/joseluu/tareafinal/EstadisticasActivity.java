@@ -82,7 +82,7 @@ public class EstadisticasActivity extends AppCompatActivity {
                 txtFechaPromedio.setText("-");
             }
 
-            // Set counts and verify max is total to calculate percentages for bars
+            
             updateProgressSection(txtCount0to25, progress0to25, stats.count0to25, stats.totalTasks);
             updateProgressSection(txtCount26to50, progress26to50, stats.count26to50, stats.totalTasks);
             updateProgressSection(txtCount51to75, progress51to75, stats.count51to75, stats.totalTasks);

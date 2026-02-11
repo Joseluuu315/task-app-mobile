@@ -54,7 +54,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     public void onBindViewHolder(@NonNull TareaViewHolder holder, int position) {
         holder.bindTarea(tareaData.get(position), position);
 
-        // Aplicar tamaños de fuente desde preferencias
+        
         float fontSize = PreferenciasHelper.getTamanoFuente(holder.itemView.getContext());
         float titleSize = PreferenciasHelper.getTamanoFuenteTitulo(holder.itemView.getContext());
 
@@ -96,7 +96,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
 
             cbPrioritario.setChecked(t.isPrioritario());
 
-            // Prioritaria → estrella + negrita
+            
             if (t.isPrioritario()) {
                 imageView.setImageResource(R.drawable.ic_star_filled);
                 txtTitle.setTypeface(null, Typeface.BOLD);
@@ -122,14 +122,14 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
                 txtTitle.setPaintFlags(0);
             }
 
-            // Click normal para abrir DescripcionActivity
+            
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), DescripcionActivity.class);
                 intent.putExtra("TAREA", t);
                 v.getContext().startActivity(intent);
             });
 
-            // Long click para mostrar menú contextual
+            
             itemView.setOnLongClickListener(v -> {
                 showPopupMenu(v, position);
                 return true;
@@ -145,13 +145,13 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
                 Tarea tarea = tareaData.get(position);
                 switch (item.getItemId()) {
 
-                    case 1: // Editar
+                    case 1: 
                         if (editListener != null) {
                             editListener.onEdit(tarea, position, view);
                         }
                         return true;
 
-                    case 2: // Borrar
+                    case 2: 
                         if (deleteListener != null) {
                             deleteListener.onDelete(position);
                         }

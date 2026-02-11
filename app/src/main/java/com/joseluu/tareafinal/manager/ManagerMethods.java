@@ -13,7 +13,7 @@ public class ManagerMethods {
     private ArrayList<Tarea> datos;
 
     private ManagerMethods() {
-        datos = init(); // Se genera solo una vez
+        datos = init(); 
     }
 
     public static ManagerMethods getInstance() {

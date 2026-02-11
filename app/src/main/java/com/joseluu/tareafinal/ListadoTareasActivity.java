@@ -69,14 +69,14 @@ public class ListadoTareasActivity extends AppCompatActivity
             actionBar.setTitle("Lista Tareas");
         }
 
-        // Inicializar repositorio
+        
         repository = TareaRepository.getInstance(this);
 
-        // Inicializar preferencias
+        
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        // Inicializar lista vacía
+        
         datos = new ArrayList<>();
 
         rvTareas = findViewById(R.id.rvTareas);
@@ -86,29 +86,29 @@ public class ListadoTareasActivity extends AppCompatActivity
         rvTareas.setAdapter(adaptador);
         rvTareas.setLayoutManager(new LinearLayoutManager(this));
 
-        // Cargar datos en onResume
+        
 
-        // CREAR
+        
         crearTareaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // La tarea ya se guardó en BD, al volver onResume recargará la lista
+                        
                         Toast.makeText(this, "Tarea creada", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        // EDITAR
+        
         editarTareaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // La tarea ya se actualizó en BD, al volver onResume recargará la lista
+                        
                         Toast.makeText(this, "Tarea actualizada", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        // Pulsar botón crear
+        
         FloatingActionButton btnCrearTarea = findViewById(R.id.btnCrearTarea);
         btnCrearTarea.setOnClickListener(v -> {
             Intent intent = new Intent(this, CrearTareaActivity.class);
@@ -129,7 +129,7 @@ public class ListadoTareasActivity extends AppCompatActivity
             repository.deleteTarea(tarea, result -> {
                 if (result) {
                     Toast.makeText(this, "Tarea eliminada", Toast.LENGTH_SHORT).show();
-                    cargarTareas(); // Recargar lista
+                    cargarTareas(); 
                 } else {
                     Toast.makeText(this, "Error al eliminar", Toast.LENGTH_SHORT).show();
                 }
@@ -140,7 +140,7 @@ public class ListadoTareasActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        // Cargar tareas al volver de cualquier actividad (Crear, Editar, Preferencias)
+        
         cargarTareas();
     }
 
@@ -154,7 +154,7 @@ public class ListadoTareasActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // Si cambian las preferencias de ordenación, recargar
+        
         if (key.equals("criterio") || key.equals("orden")) {
             cargarTareas();
         }
@@ -197,23 +197,21 @@ public class ListadoTareasActivity extends AppCompatActivity
             return true;
         }
 
-        // Handle "Estadísticas" menu item
+        
         if (id == R.id.menu_estadisticas) {
             Intent intent = new Intent(this, EstadisticasActivity.class);
             startActivity(intent);
             return true;
         }
-        // Assuming ID will be known once XML is updated, but for now checking title or
-        // handled in BaseActivity
-        // The instructions say "Añade una entrada en el menú principal... aparecerá en
-        // tercera posición... llamada 'Estadísticas'"
+        
+        
+        
+        
 
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Carga las tareas desde el repositorio aplicando filtros y ordenación
-     */
+    
     private void cargarTareas() {
         String criterioStr = prefs.getString("criterio", "2");
         int criterio = Integer.parseInt(criterioStr);
@@ -225,7 +223,7 @@ public class ListadoTareasActivity extends AppCompatActivity
             adaptador.notifyDataSetChanged();
             actualizerVisibilities();
 
-            // Update title or icon based on filter?
+            
             if (mostrandoPrioritarias) {
                 if (getSupportActionBar() != null)
                     getSupportActionBar().setTitle("Tareas Prioritarias");
@@ -236,7 +234,7 @@ public class ListadoTareasActivity extends AppCompatActivity
         });
     }
 
-    // Método obsoleto, reemplazado por cargarTareas() que delegar en repositorio
+    
     private void aplicarOrdenacion() {
         cargarTareas();
     }

@@ -28,13 +28,11 @@ public interface TareaDao {
     @Query("SELECT * FROM tareas WHERE id = :id")
     TareaEntity getTareaById(int id);
 
-    /**
-     * Get all tasks with dynamic sorting provided by SupportSQLiteQuery
-     */
+    
     @RawQuery
     List<TareaEntity> getTareas(SupportSQLiteQuery query);
 
-    // Statistics Queries
+    
 
     @Query("SELECT COUNT(*) FROM tareas")
     int getTotalTaskCount();
@@ -45,9 +43,7 @@ public interface TareaDao {
     @Query("SELECT AVG(progreso) FROM tareas")
     float getAverageProgress();
 
-    /**
-     * Get count of tasks within a progress range (inclusive)
-     */
+    
     @Query("SELECT COUNT(*) FROM tareas WHERE progreso >= :min AND progreso <= :max")
     int getCountByProgressRange(int min, int max);
 

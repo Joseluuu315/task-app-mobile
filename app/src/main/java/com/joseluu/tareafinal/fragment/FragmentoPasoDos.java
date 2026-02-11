@@ -43,14 +43,14 @@ public class FragmentoPasoDos extends Fragment {
     private FormularioViewModel viewModel;
     private ArchivoEditableAdapter existingFilesAdapter;
 
-    // Map to store selected file URIs by type (for newly selected files)
+    
     private Map<ArchivoAdjunto.TipoArchivo, Uri> selectedFiles = new HashMap<>();
     private Map<ArchivoAdjunto.TipoArchivo, String> selectedFileNames = new HashMap<>();
 
-    // List of files to delete (existing files marked for deletion)
+    
     private List<ArchivoAdjunto> filesToDelete = new ArrayList<>();
 
-    // Activity result launchers for file pickers
+    
     private ActivityResultLauncher<Intent> documentPickerLauncher;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     private ActivityResultLauncher<Intent> audioPickerLauncher;
@@ -88,15 +88,15 @@ public class FragmentoPasoDos extends Fragment {
 
     private void setupExistingFilesRecyclerView() {
         existingFilesAdapter = new ArchivoEditableAdapter((archivo, position) -> {
-            // Show confirmation dialog before deleting
+            
             new AlertDialog.Builder(requireContext())
                     .setTitle("Eliminar archivo")
                     .setMessage("¿Eliminar " + archivo.getNombreArchivo() + "?")
                     .setPositiveButton("Eliminar", (dialog, which) -> {
-                        // Mark for deletion
+                        
                         filesToDelete.add(archivo);
 
-                        // Remove from current list
+                        
                         List<ArchivoAdjunto> currentFiles = viewModel.archivosAdjuntos.getValue();
                         if (currentFiles != null) {
                             currentFiles.remove(archivo);
@@ -182,15 +182,7 @@ public class FragmentoPasoDos extends Fragment {
     private String getMimeType(ArchivoAdjunto.TipoArchivo tipo) {
         switch (tipo) {
             case DOCUMENTO:
-                return "application/*";
-            case IMAGEN:
-                return "image/*";
-            case AUDIO:
-                return "audio/*";
-            case VIDEO:
-                return "video/*";
-            default:
-                return "*/*";
+                return "application*";
         }
     }
 
@@ -258,7 +250,7 @@ public class FragmentoPasoDos extends Fragment {
 
         Tarea tarea = new Tarea(titulo, descripcion, progreso, fechaCreacion, fechaObjetivo, prioritaria);
 
-        // Add existing files (not marked for deletion)
+        
         List<ArchivoAdjunto> existingFiles = viewModel.archivosAdjuntos.getValue();
         if (existingFiles != null) {
             for (ArchivoAdjunto archivo : existingFiles) {
@@ -268,12 +260,12 @@ public class FragmentoPasoDos extends Fragment {
             }
         }
 
-        // Delete files marked for deletion
+        
         for (ArchivoAdjunto archivo : filesToDelete) {
             FileStorageHelper.deleteFile(archivo.getRutaArchivo());
         }
 
-        // Save newly selected files to storage and add to tarea
+        
         for (Map.Entry<ArchivoAdjunto.TipoArchivo, Uri> entry : selectedFiles.entrySet()) {
             String fileName = selectedFileNames.get(entry.getKey());
             String savedPath = FileStorageHelper.saveFileToStorage(
@@ -283,7 +275,7 @@ public class FragmentoPasoDos extends Fragment {
 
             if (savedPath != null) {
                 ArchivoAdjunto archivo = new ArchivoAdjunto(
-                        0, // tareaId will be set later
+                        0, 
                         entry.getKey(),
                         fileName,
                         savedPath);

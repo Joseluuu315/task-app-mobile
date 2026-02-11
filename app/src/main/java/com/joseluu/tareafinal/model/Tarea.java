@@ -12,16 +12,16 @@ import java.util.List;
 
 public class Tarea implements Parcelable {
 
-    private int id; // Task ID for database
+    private int id; 
     private String titulo, descripcion;
     private int progreso;
     private Date fechaCreacion, fechaObjectivo;
     private boolean prioritario;
-    private List<ArchivoAdjunto> archivosAdjuntos; // Associated files
+    private List<ArchivoAdjunto> archivosAdjuntos; 
 
     public Tarea(String titulo, String descripcion, int progreso, Date fechaCreacion, Date fechaObjectivo,
             boolean prioritario) {
-        this.id = 0; // Will be set by database
+        this.id = 0; 
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.progreso = progreso;

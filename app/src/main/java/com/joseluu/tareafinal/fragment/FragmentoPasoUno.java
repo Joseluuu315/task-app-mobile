@@ -46,7 +46,7 @@ public class FragmentoPasoUno extends Fragment {
         spinnerProgreso = view.findViewById(R.id.spinnerProgreso);
         cbPrioritaria = view.findViewById(R.id.cbPrioritaria);
 
-        // Configurar Spinner
+        
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -54,14 +54,14 @@ public class FragmentoPasoUno extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerProgreso.setAdapter(adapter);
 
-        // Precargar datos si existen
+        
         precargarDatos();
 
-        // DatePickers
+        
         edtFechaCreacion.setOnClickListener(v -> mostrarDatePicker(edtFechaCreacion));
         edtFechaObjetivo.setOnClickListener(v -> mostrarDatePicker(edtFechaObjetivo));
 
-        // Botón Cancelar
+        
         view.findViewById(R.id.btnCancelar).setOnClickListener(v -> {
             requireActivity().finish();
         });
@@ -102,7 +102,7 @@ public class FragmentoPasoUno extends Fragment {
 
         if (viewModel.progreso.getValue() != null) {
             int progreso = viewModel.progreso.getValue();
-            int pos = progreso / 25; // porque usamos {0,25,50,75,100}
+            int pos = progreso / 25; 
             spinnerProgreso.setSelection(pos);
         }
     }

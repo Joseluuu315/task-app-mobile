@@ -29,11 +29,11 @@ public class CrearTareaActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true); // habilita la flecha
+            actionBar.setDisplayHomeAsUpEnabled(true); 
             actionBar.setTitle("Crear Tarea");
         }
 
-        // Cargar primer fragmento
+        
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contenedorFragmentos, new FragmentoPasoUno())
                 .commit();
@@ -60,21 +60,21 @@ public class CrearTareaActivity extends BaseActivity {
     }
 
     public void guardarTareaYSalir(Tarea nueva) {
-        // En lugar de devolver la tarea por Intent, la guardamos en BD
+        
         com.joseluu.tareafinal.repository.TareaRepository repository = com.joseluu.tareafinal.repository.TareaRepository
                 .getInstance(this);
 
         repository.addTarea(nueva, result -> {
             if (result) {
-                // Si se guardó correctamente, devolvemos OK
+                
                 Intent data = new Intent();
-                // Opcional: devolver ID o algo, pero la lista se recargará
+                
                 setResult(RESULT_OK, data);
                 finish();
             } else {
-                // Manejar error (Toast, etc) -> Aunque aquí estamos en background callback ->
-                // runOnUiThread
-                // Pero el callback del repositorio ya vuelve al main thread.
+                
+                
+                
                 android.widget.Toast.makeText(this, "Error al guardar la tarea", android.widget.Toast.LENGTH_SHORT)
                         .show();
             }
