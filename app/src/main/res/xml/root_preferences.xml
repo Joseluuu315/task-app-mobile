@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- CATEGORÍA VISUALIZACIÓN -->
+    <PreferenceCategory
+        android:title="Visualización"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreferenceCompat
+            android:key="tema"
+            android:title="Tema"
+            android:summaryOn="Claro"
+            android:summaryOff="Oscuro"
+            android:defaultValue="true"
+            android:icon="@drawable/ic_theme"
+            app:iconSpaceReserved="true" />
+
+        <ListPreference
+            android:key="fuente"
+            android:title="Tamaño de Letra"
+            android:entries="@array/fuente_entries"
+            android:entryValues="@array/fuente_values"
+            android:defaultValue="2"
+            android:icon="@drawable/ic_font_size"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="true" />
+
+    </PreferenceCategory>
+
+    <!-- CATEGORÍA ORDENACIÓN -->
+    <PreferenceCategory
+        android:title="Ordenación"
+        app:iconSpaceReserved="false">
+
+        <ListPreference
+            android:key="criterio"
+            android:title="Criterio"
+            android:entries="@array/criterio_entries"
+            android:entryValues="@array/criterio_values"
+            android:defaultValue="2"
+            android:icon="@drawable/ic_sort"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="true" />
+
+        <SwitchPreferenceCompat
+            android:key="orden"
+            android:title="Orden"
+            android:summaryOn="Ascendente"
+            android:summaryOff="Descendente"
+            android:defaultValue="true"
+            android:icon="@drawable/ic_order"
+            app:iconSpaceReserved="true" />
+
+    </PreferenceCategory>
+
+    <!-- CATEGORÍA ALMACENAMIENTO -->
+    <PreferenceCategory
+        android:title="Almacenamiento"
+        app:iconSpaceReserved="false">
+
+        <CheckBoxPreference
+            android:key="sd"
+            android:title="Almacenamiento en tarjeta SD"
+            android:summary="Guardar archivos adjuntos en tarjeta SD si está disponible"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_sd_card"
+            app:iconSpaceReserved="true" />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

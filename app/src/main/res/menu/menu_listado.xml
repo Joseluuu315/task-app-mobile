@@ -16,14 +16,28 @@
         android:icon="@android:drawable/btn_star_big_on"
         app:showAsAction="ifRoom|withText" />
 
-    <!-- OVERFLOW -->
+    <!-- OVERFLOW - Preferencias en primera posición -->
+    <item
+        android:id="@+id/menu_preferencias"
+        android:title="Preferencias"
+        android:orderInCategory="1"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/menu_acerca"
         android:title="@string/acerca_de"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_estadisticas"
+        android:title="@string/estad_sticas"
+        android:orderInCategory="3"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_salir"
         android:title="@string/salir"
+        android:orderInCategory="4"
         app:showAsAction="never" />
 </menu>

@@ -7,7 +7,6 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.joseluu.tareafinal.fragment.FragmentoPasoDos;
@@ -17,10 +16,9 @@ import com.joseluu.tareafinal.view.FormularioViewModel;
 
 import java.util.ArrayList;
 
-public class CrearTareaActivity extends AppCompatActivity {
+public class CrearTareaActivity extends BaseActivity {
 
     FormularioViewModel viewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +29,11 @@ public class CrearTareaActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true); // habilita la flecha
+            actionBar.setDisplayHomeAsUpEnabled(true); 
             actionBar.setTitle("Crear Tarea");
         }
 
-
-        // Cargar primer fragmento
+        
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contenedorFragmentos, new FragmentoPasoUno())
                 .commit();
@@ -62,14 +59,25 @@ public class CrearTareaActivity extends AppCompatActivity {
         getSupportFragmentManager().popBackStack();
     }
 
-
     public void guardarTareaYSalir(Tarea nueva) {
-        Intent data = new Intent();
-        data.putExtra("TAREA_NUEVA", nueva);
-        setResult(RESULT_OK, data);
+        
+        com.joseluu.tareafinal.repository.TareaRepository repository = com.joseluu.tareafinal.repository.TareaRepository
+                .getInstance(this);
 
-        finish();
-
-
+        repository.addTarea(nueva, result -> {
+            if (result) {
+                
+                Intent data = new Intent();
+                
+                setResult(RESULT_OK, data);
+                finish();
+            } else {
+                
+                
+                
+                android.widget.Toast.makeText(this, "Error al guardar la tarea", android.widget.Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 }

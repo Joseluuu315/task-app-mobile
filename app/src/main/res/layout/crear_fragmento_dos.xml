@@ -8,10 +8,21 @@
     android:paddingTop="?attr/actionBarSize"
     android:background="?attr/colorSurface">
 
+    <!-- Description Label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descripción"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface" />
+
+    <!-- Description EditText with ScrollView -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginTop="8dp">
 
         <EditText
             android:id="@+id/edtDescripcion"
@@ -26,11 +37,102 @@
             android:textColorHint="?attr/colorOnSurfaceVariant" />
     </ScrollView>
 
+    <!-- File Attachment Section -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Archivos Adjuntos"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginTop="16dp" />
+
+    <!-- ImageButtons for file types -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="12dp">
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <ImageButton
+            android:id="@+id/btnAttachDocument"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_document"
+            android:contentDescription="Adjuntar documento"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
+
+        <ImageButton
+            android:id="@+id/btnAttachImage"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_image_file"
+            android:contentDescription="Adjuntar imagen"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
+
+        <ImageButton
+            android:id="@+id/btnAttachAudio"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_audio"
+            android:contentDescription="Adjuntar audio"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
+
+        <ImageButton
+            android:id="@+id/btnAttachVideo"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_video"
+            android:contentDescription="Adjuntar vídeo"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <!-- Existing Attachments (Edit Mode) -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Archivos actuales"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginTop="12dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExistingFiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:visibility="gone" />
+
+    <!-- Display selected files -->
+    <TextView
+        android:id="@+id/txtSelectedFiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ningún archivo seleccionado"
+        android:textSize="12sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnVolver"

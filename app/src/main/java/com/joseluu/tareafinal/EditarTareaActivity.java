@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.joseluu.tareafinal.fragment.FragmentoPasoDos;
@@ -14,7 +13,7 @@ import com.joseluu.tareafinal.fragment.FragmentoPasoUno;
 import com.joseluu.tareafinal.model.Tarea;
 import com.joseluu.tareafinal.view.FormularioViewModel;
 
-public class EditarTareaActivity extends AppCompatActivity {
+public class EditarTareaActivity extends BaseActivity {
 
     private FormularioViewModel viewModel;
     private Tarea tareaOriginal;
@@ -39,7 +38,7 @@ public class EditarTareaActivity extends AppCompatActivity {
             precargarDatosEnViewModel();
         }
 
-        // Cargar fragmento inicial (Paso 1)
+        
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contenedorFragmentos, new FragmentoPasoUno())
                 .commit();
@@ -52,6 +51,11 @@ public class EditarTareaActivity extends AppCompatActivity {
         viewModel.fechaCreacion.setValue(tareaOriginal.getFechaCreacion());
         viewModel.fechaObjetivo.setValue(tareaOriginal.getFechaObjectivo());
         viewModel.prioritaria.setValue(tareaOriginal.isPrioritario());
+
+        
+        if (tareaOriginal.getArchivosAdjuntos() != null) {
+            viewModel.archivosAdjuntos.setValue(tareaOriginal.getArchivosAdjuntos());
+        }
     }
 
     public void cargarPaso2() {
@@ -66,13 +70,26 @@ public class EditarTareaActivity extends AppCompatActivity {
     }
 
     public void guardarTareaEditada(Tarea modificada) {
+        if (tareaOriginal != null) {
+            modificada.setId(tareaOriginal.getId());
+        }
 
-        // Devolver tarea editada
-        Intent data = new Intent();
-        data.putExtra("TAREA_EDITADA", modificada);
+        com.joseluu.tareafinal.repository.TareaRepository repository = com.joseluu.tareafinal.repository.TareaRepository
+                .getInstance(this);
 
-        setResult(Activity.RESULT_OK, data);
-        finish();
+        repository.updateTarea(modificada, result -> {
+            if (result) {
+                Intent data = new Intent();
+                
+                
+                data.putExtra("TAREA_EDITADA", modificada);
+                setResult(Activity.RESULT_OK, data);
+                finish();
+            } else {
+                android.widget.Toast.makeText(this, "Error al actualizar la tarea", android.widget.Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     @Override

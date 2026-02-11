@@ -19,7 +19,7 @@ import com.joseluu.tareafinal.model.Tarea;
 
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity{
 
     private ActivityResultLauncher<Intent> crearTareaDesdeMainLauncher;
 
@@ -29,15 +29,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
 
-        // Ocultar la barra de acción
+        
         if (actionBar != null) {
             actionBar.hide();
         }
 
 
         Button btnEmpezar = findViewById(R.id.btnEmpezar);
-        Button btnCrearActividad = findViewById(R.id.btnCrearTarea);
-        Button btnChangeThemes = findViewById(R.id.btnThemesChange);
 
         crearTareaDesdeMainLauncher =
                 registerForActivityResult(
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (data != null && data.hasExtra("TAREA_NUEVA")) {
                                     Tarea nueva = data.getParcelableExtra("TAREA_NUEVA");
                                     if (nueva != null) {
-                                        // Añadir la tarea al Singleton
+                                        
                                         ManagerMethods.getInstance().addTarea(nueva);
                                     }
                                 }
@@ -56,27 +54,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                 );
 
-        // Ir a listado
+        
         btnEmpezar.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ListadoTareasActivity.class);
             startActivity(intent);
-        });
-
-        // Crear tarea DESDE MAIN
-        btnCrearActividad.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CrearTareaActivity.class);
-            crearTareaDesdeMainLauncher.launch(intent);
-        });
-
-        // Cambiar tema
-        btnChangeThemes.setOnClickListener(v -> {
-            int current = AppCompatDelegate.getDefaultNightMode();
-
-            if (current == AppCompatDelegate.MODE_NIGHT_YES) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
         });
 
         Button btnLanguage = findViewById(R.id.btnLanguage);
