@@ -53,4 +53,32 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="estad_sticas">Estadísticas</string>
+    <string name="t_tulo_de_la_tarea">Título de la tarea</string>
+    <string name="fecha_de_creaci_n">Fecha de creación</string>
+    <string name="fecha_l_mite">Fecha límite</string>
+    <string name="estado_inicial">Estado inicial</string>
+    <string name="marcar_como_prioritaria">Marcar como prioritaria</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="descripci_n">Descripción</string>
+    <string name="archivos_adjuntos">Archivos Adjuntos</string>
+    <string name="adjuntar_documento">Adjuntar documento</string>
+    <string name="adjuntar_imagen">Adjuntar imagen</string>
+    <string name="adjuntar_audio">Adjuntar audio</string>
+    <string name="adjuntar_video">Adjuntar video</string>
+    <string name="ning_n_archivo_seleccionado">Ningún archivo seleccionado</string>
+    <string name="resumen_general">Resumen General</string>
+    <string name="_0">0</string>
+    <string name="total">Total</string>
+    <string name="pendientes">Pendientes</string>
+    <string name="completadas">Completadas</string>
+    <string name="prioritarias_point">Prioritarias:</string>
+    <string name="progreso_promedio">Progreso Promedio:</string>
+    <string name="_0porcent">0%</string>
+    <string name="fecha_objetivo_promedio">Fecha Objetivo Promedio:</string>
+    <string name="distribuci_n_de_progreso">Distribución de Progreso</string>
+    <string name="estado_de_progreso">Estado de Progreso</string>
+    <string name="adjuntos">Adjuntos</string>
+    <string name="sin_archivos_adjuntos">Sin archivos adjuntos</string>
 </resources>

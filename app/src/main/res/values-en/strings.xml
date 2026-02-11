@@ -1,24 +1,24 @@
 <resources>
-    <string name="app_name">Final Task</string>
+    <string name="app_name">Final Project</string>
     <string name="texto_inicial">Your tasks, your pace, your success\n</string>
     <string name="start_app">START\n</string>
-    <string name="todo">TODO</string>
+    <string name="todo">ALL</string>
     <string name="tarea">Pending Tasks</string>
     <string name="descripcion">Description</string>
     <string name="prioritario">Priority</string>
-    <string name="fecha_fin">End date</string>
-    <string name="fecha_inicio">Start date</string>
+    <string name="fecha_fin">End Date</string>
+    <string name="fecha_inicio">Start Date</string>
     <string name="progreso">Progress</string>
     <string name="_0_d_as_restantes">0 days remaining</string>
-    <string name="descripci_n_completa">Full description</string>
+    <string name="descripci_n_completa">Full Description</string>
     <string name="volver">Back</string>
     <string name="guardar">Save</string>
     <string name="crear_tarea">Create Task</string>
-    <string name="editar_tarea">Edit task</string>
+    <string name="editar_tarea">Edit Task</string>
     <string name="txtTituloEditarTarea">Edit Task</string>
     <string name="idTitulo">Title</string>
-    <string name="itFechaCreacion">Creation date</string>
-    <string name="itFechaObjetivo">Target date</string>
+    <string name="itFechaCreacion">Creation Date</string>
+    <string name="itFechaObjetivo">Target Date</string>
     <string name="itPrioritaria">Priority</string>
     <string name="itdescripcion">Description</string>
     <string name="btnGuardar">Save</string>
@@ -29,11 +29,56 @@
     <string name="msgElTituloVacio">The title is empty</string>
     <string name="msg_fecha_creacion_vacia">Creation date is empty</string>
     <string name="msg_fecha_objetivo_vacia">Target date is empty</string>
-    <string name="cambiar_tema">Change theme</string>
+    <string name="cambiar_tema">Change Theme</string>
     <string name="no_hay_tareas">No tasks available</string>
-    <string name="prioritarias">Priority tasks</string>
+    <string name="prioritarias">Priority Tasks</string>
     <string name="a_adir">Add</string>
     <string name="acerca_de">About</string>
     <string name="salir">Exit</string>
-    <string name="cambiar_idioma">Change language\n</string>
+    <string name="cambiar_idioma">Change Language\n</string>
+    <string name="preferencia">Preference</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="estad_sticas">Statistics</string>
+    <string name="t_tulo_de_la_tarea">Task Title</string>
+    <string name="fecha_de_creaci_n">Creation Date</string>
+    <string name="fecha_l_mite">Due Date</string>
+    <string name="estado_inicial">Initial Status</string>
+    <string name="marcar_como_prioritaria">Mark as Priority</string>
+    <string name="cancelar">Cancel</string>
+    <string name="siguiente">Next</string>
+    <string name="descripci_n">Description</string>
+    <string name="archivos_adjuntos">Attachments</string>
+    <string name="adjuntar_documento">Attach Document</string>
+    <string name="adjuntar_imagen">Attach Image</string>
+    <string name="adjuntar_audio">Attach Audio</string>
+    <string name="adjuntar_video">Attach Video</string>
+    <string name="ning_n_archivo_seleccionado">No file selected</string>
+    <string name="resumen_general">General Summary</string>
+    <string name="_0">0</string>
+    <string name="total">Total</string>
+    <string name="pendientes">Pending</string>
+    <string name="completadas">Completed</string>
+    <string name="prioritarias_point">Priority:</string>
+    <string name="progreso_promedio">Average Progress:</string>
+    <string name="_0porcent">0%</string>
+    <string name="fecha_objetivo_promedio">Average Target Date:</string>
+    <string name="distribuci_n_de_progreso">Progress Distribution</string>
+    <string name="estado_de_progreso">Progress Status</string>
+    <string name="adjuntos">Attachments</string>
+    <string name="sin_archivos_adjuntos">No attachments</string>
 </resources>

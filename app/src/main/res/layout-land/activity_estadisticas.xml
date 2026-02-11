@@ -33,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="Resumen General"
+                    android:text="@string/resumen_general"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textStyle="bold" />
 
@@ -54,14 +54,14 @@
                             android:id="@+id/txtTotalTareas"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/_0"
                             android:textAppearance="?attr/textAppearanceHeadline4"
                             android:textColor="?attr/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total" />
+                            android:text="@string/total" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -75,14 +75,14 @@
                             android:id="@+id/txtPendientes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/_0"
                             android:textAppearance="?attr/textAppearanceHeadline4"
                             android:textColor="@android:color/holo_orange_dark" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pendientes" />
+                            android:text="@string/pendientes" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -96,14 +96,14 @@
                             android:id="@+id/txtCompletadas"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/_0"
                             android:textAppearance="?attr/textAppearanceHeadline4"
                             android:textColor="@android:color/holo_green_dark" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Completadas" />
+                            android:text="@string/completadas" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -124,13 +124,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Prioritarias:" />
+                        android:text="@string/prioritarias_point" />
                         
                     <TextView
                         android:id="@+id/txtPrioritarias"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -145,13 +145,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Progreso Promedio:" />
+                        android:text="@string/progreso_promedio" />
 
                     <TextView
                         android:id="@+id/txtPromedioProgreso"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0%"
+                        android:text="@string/_0porcent"
                         android:textStyle="bold" />
                 </LinearLayout>
                 
@@ -166,7 +166,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Fecha Objetivo Promedio:" />
+                        android:text="@string/fecha_objetivo_promedio" />
 
                     <TextView
                         android:id="@+id/txtFechaPromedio"
@@ -199,7 +199,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="Distribución de Progreso"
+                    android:text="@string/distribuci_n_de_progreso"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textStyle="bold" />
 
